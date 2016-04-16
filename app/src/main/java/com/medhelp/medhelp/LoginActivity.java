@@ -2,6 +2,7 @@ package com.medhelp.medhelp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,8 +10,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.authenticationValidator;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,11 +30,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+    // TODO: Change url to production
+    private static final String LOGIN_URL = "http://192.168.1.X:4000/api/users/login";
+
     @Bind(R.id.input_email) EditText _emailText;
     @Bind(R.id.input_password) EditText _passwordText;
     @Bind(R.id.link_forgotPassword) TextView _forgotPasswordLink;
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.btn_signup) Button _signupButton;
+
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +81,42 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (!validateEmail(email) || !validatePassword(password))
-            onLoginFailed("Falha no login");
-        else
+        if (validateEmail(email) && validatePassword(password))
             authenticate(email, password);
+        else
+            _loginButton.setEnabled(true);
     }
 
-    public void authenticate(String email, String password) {
-        //TODO: Implement call to web service
+    public void authenticate(final String email, final String password) {
+        StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Login realizado com sucesso");
+                Toast.makeText(getBaseContext(), "Login realizado com sucesso", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Login falhou");
+
+                if (!TextUtils.isEmpty(error.getMessage()))
+                    onLoginFailed(error.getMessage());
+                else
+                    onLoginFailed("Email ou senha inválidos");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
 
         _loginButton.setEnabled(true);
     }

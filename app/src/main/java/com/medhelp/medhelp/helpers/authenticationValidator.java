@@ -21,7 +21,7 @@ public class authenticationValidator {
     }
 
     public static boolean isValidPassword(String password) throws PasswordInvalidException {
-        if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 10)
+        if (password == null || password.isEmpty() || password.length() < 4 || password.length() > 16)
             throw new PasswordInvalidException();
 
         return true;
