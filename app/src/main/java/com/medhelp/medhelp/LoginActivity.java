@@ -1,5 +1,6 @@
 package com.medhelp.medhelp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -57,9 +58,8 @@ public class LoginActivity extends AppCompatActivity {
         _signupButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // TODO: Start the SignUp Activity
-                // Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                // ...
+                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                 startActivity(intent);
             }
         });
 
