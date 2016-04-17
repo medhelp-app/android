@@ -34,11 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     // TODO: Change url to production
     private static final String LOGIN_URL = "http://192.168.1.X:4000/api/users/login";
 
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
-    @Bind(R.id.link_forgotPassword) TextView _forgotPasswordLink;
-    @Bind(R.id.btn_login) Button _loginButton;
-    @Bind(R.id.btn_signup) Button _signupButton;
+    @Bind(R.id.input_email_login) EditText _emailText;
+    @Bind(R.id.input_password_login) EditText _passwordText;
+    @Bind(R.id.link_forgotPassword_login) TextView _forgotPasswordLink;
+    @Bind(R.id.btn_login_login) Button _loginButton;
+    @Bind(R.id.btn_signup_login) Button _signupButton;
 
     RequestQueue requestQueue;
 

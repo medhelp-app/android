@@ -8,20 +8,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.medhelp.medhelp.SignUpActivity">
+    tools:context="com.medhelp.medhelp.SignUpActivity" >
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:id="@+id/input_name_signup"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="135dp"
         android:hint="Nome"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorText"
         android:textIsSelectable="false"
-        android:backgroundTint="#ffffff"
-        android:textColorHint="#ffffff" />
+        android:backgroundTint="@color/colorText"
+        android:textColorHint="@color/colorText" />
 
     <EditText
         android:layout_width="match_parent"
@@ -32,10 +33,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/input_name_signup"
         android:hint="Email"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorText"
         android:textIsSelectable="false"
-        android:backgroundTint="#ffffff"
-        android:textColorHint="#ffffff" />
+        android:backgroundTint="@color/colorText"
+        android:textColorHint="@color/colorText" />
 
     <EditText
         android:layout_width="match_parent"
@@ -45,10 +46,10 @@
         android:layout_below="@+id/input_email_signup"
         android:hint="Senha"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorText"
         android:textIsSelectable="false"
-        android:backgroundTint="#ffffff"
-        android:textColorHint="#ffffff" />
+        android:backgroundTint="@color/colorText"
+        android:textColorHint="@color/colorText" />
 
     <EditText
         android:layout_width="match_parent"
@@ -58,18 +59,18 @@
         android:layout_below="@+id/input_password_signup"
         android:hint="Confirmição da senha"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorText"
         android:textIsSelectable="false"
-        android:backgroundTint="#ffffff"
-        android:textColorHint="#ffffff" />
+        android:backgroundTint="@color/colorText"
+        android:textColorHint="@color/colorText" />
 
     <Button
         android:id="@+id/btn_signup_signup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Cadstrar"
+        android:text="Cadastrar"
         android:textColor="#ffffff"
-        android:background="#0099e6"
+        android:background="@color/colorButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

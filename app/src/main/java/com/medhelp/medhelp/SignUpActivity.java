@@ -1,7 +1,7 @@
 package com.medhelp.medhelp;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +25,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SignUpActivity extends Activity {
+public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     // TODO: Change url to production
