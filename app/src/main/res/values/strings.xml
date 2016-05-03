@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MedHelp</string>
+    <string-array name="user_type">
+        <item>Médico</item>
+        <item>Paciente</item>
+    </string-array>
 </resources>
