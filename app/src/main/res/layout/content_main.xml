@@ -8,13 +8,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
     tools:context="com.medhelp.medhelp.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/sections_tab"
+        android:layout_marginBottom="30dp"
         android:id="@+id/view_pager_mainTab"/>
 
 </RelativeLayout>

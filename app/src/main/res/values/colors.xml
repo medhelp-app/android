@@ -7,4 +7,5 @@
     <color name="colorButton">#003366</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorTextNotSelected">#A9A9A9</color>
+    <color name="colorControlActivated">#FFFFFF</color>
 </resources>
