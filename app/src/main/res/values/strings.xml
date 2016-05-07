@@ -4,4 +4,15 @@
         <item>Médico</item>
         <item>Paciente</item>
     </string-array>
+
+    <string-array name="titles_patientTab">
+        <item>Perfil</item>
+        <item>Médicos</item>
+        <item>Arquivos</item>
+        <item>Social</item>
+    </string-array>
+
+    <!--&lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <!--<string name="title_activity_main">MainActivity</string>-->
 </resources>
