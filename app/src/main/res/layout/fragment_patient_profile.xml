@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.medhelp.medhelp.PatientProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Perfil"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@drawable/blank_profile"
+        android:id="@+id/profile_image_patient"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
