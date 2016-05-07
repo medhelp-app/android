@@ -15,6 +15,6 @@
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/view_pager_"/>
+        android:id="@+id/view_pager_mainTab"/>
 
 </RelativeLayout>
