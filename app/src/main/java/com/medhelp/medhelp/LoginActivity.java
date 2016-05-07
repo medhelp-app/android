@@ -17,7 +17,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 
@@ -32,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     // TODO: Change url to production
-    private static final String LOGIN_URL = "http://192.168.1.X:4000/api/users/login";
+    private static final String LOGIN_URL = "http://192.168.1.3:4000/api/users/login";
 
     @Bind(R.id.input_email_login) EditText _emailText;
     @Bind(R.id.input_password_login) EditText _passwordText;
@@ -83,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (validateEmail(email) && validatePassword(password))
             authenticate(email, password);
+
         else
             _loginButton.setEnabled(true);
     }
@@ -92,7 +92,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Login realizado com sucesso");
-                Toast.makeText(getBaseContext(), "Login realizado com sucesso", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -115,8 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(request);
+        AppController.getInstance().addToRequestQueue(request);
 
         _loginButton.setEnabled(true);
     }
