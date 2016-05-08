@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
+import com.medhelp.medhelp.model.EUserType;
 import com.medhelp.medhelp.model.User;
 
 import java.io.IOException;
@@ -39,12 +42,21 @@ public class SignUpActivity extends AppCompatActivity {
     @Bind(R.id.input_password_signup) EditText _passwordText;
     @Bind(R.id.input_confirmationPassword_signup) EditText _passwordConfirmationText;
     @Bind(R.id.btn_signup_signup) Button _signupButton;
+    private Spinner mUserTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
+
+        mUserTypeSpinner = (Spinner) findViewById(R.id.spinner_userType_signup);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.user_type, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mUserTypeSpinner.setAdapter(adapter);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,13 +77,17 @@ public class SignUpActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String passwordConfirmation = _passwordConfirmationText.getText().toString();
 
+        EUserType userType = EUserType.Patient;
+        if (mUserTypeSpinner.getSelectedItemPosition() == 1)
+            userType = EUserType.Doctor;
+
         if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation))
-            register(name, email, password, passwordConfirmation);
+            register(name, email, password, passwordConfirmation, userType);
         else
             _signupButton.setEnabled(true);
     }
 
-    private void register(final String name, final String email, final String password, final String passwordConfirmation) {
+    private void register(final String name, final String email, final String password, final String passwordConfirmation, final EUserType userType) {
         StringRequest request = new StringRequest(Request.Method.POST, URLHelper.SIGNUP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -120,6 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
                 params.put("email", email);
                 params.put("password", password);
                 params.put("rePassword", passwordConfirmation);
+                params.put("userType", String.valueOf(userType.getValue()));
 
                 return params;
             }

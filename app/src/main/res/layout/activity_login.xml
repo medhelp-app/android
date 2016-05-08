@@ -19,36 +19,50 @@
         android:paddingTop="12dp"
         android:layout_gravity="center_horizontal" />
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/input_email_login"
-        android:layout_gravity="center_horizontal"
-        android:hint="Email"
-        android:textColor="@color/colorText"
-        android:textIsSelectable="false"
-        android:backgroundTint="@color/colorText"
-        android:textColorHint="@color/colorText"
-        android:layout_below="@+id/image_logo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/image_logo" >
 
-    <EditText
-        android:id="@+id/input_password_login"
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/input_email_login"
+            android:layout_gravity="center_horizontal"
+            android:hint="Email"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="false"
+            android:backgroundTint="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_gravity="center_horizontal"
-        android:hint="Senha"
-        android:textColorHint="@color/colorText"
-        android:textColor="@color/colorText"
-        android:backgroundTint="@color/colorText"
-        android:layout_below="@+id/input_email_login"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/input_layout_email_login" >
+
+        <EditText
+            android:id="@+id/input_password_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:layout_gravity="center_horizontal"
+            android:hint="Senha"
+            android:textColorHint="@color/colorText"
+            android:textColor="@color/colorText"
+            android:backgroundTint="@color/colorText"
+            android:layout_below="@+id/input_email_login"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/link_forgotPassword_login"
@@ -61,7 +75,7 @@
         android:textSize="16sp"
         android:clickable="true"
         android:textColor="@color/colorText"
-        android:layout_below="@+id/input_password_login"
+        android:layout_below="@+id/input_layout_password_login"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

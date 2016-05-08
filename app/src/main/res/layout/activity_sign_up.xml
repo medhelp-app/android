@@ -10,59 +10,103 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.medhelp.medhelp.SignUpActivity" >
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_name_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:id="@+id/input_name_signup"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="135dp"
-        android:hint="Nome"
-        android:textColor="@color/colorText"
-        android:textIsSelectable="false"
-        android:backgroundTint="@color/colorText"
-        android:textColorHint="@color/colorText" />
+        android:layout_centerHorizontal="true">
 
-    <EditText
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/input_name_signup"
+            android:hint="Nome"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="false"
+            android:backgroundTint="@color/colorText"
+            android:textColorHint="@color/colorText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/input_email_signup"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/input_name_signup"
-        android:hint="Email"
-        android:textColor="@color/colorText"
-        android:textIsSelectable="false"
-        android:backgroundTint="@color/colorText"
-        android:textColorHint="@color/colorText" />
+        android:layout_below="@id/input_layout_name_signup" >
 
-    <EditText
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/input_email_signup"
+            android:hint="Email"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="false"
+            android:backgroundTint="@color/colorText"
+            android:textColorHint="@color/colorText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:id="@+id/input_password_signup"
-        android:layout_below="@+id/input_email_signup"
-        android:hint="Senha"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorText"
-        android:textIsSelectable="false"
-        android:backgroundTint="@color/colorText"
-        android:textColorHint="@color/colorText" />
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/input_layout_email_signup" >
 
-    <EditText
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/input_password_signup"
+            android:hint="Senha"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="false"
+            android:backgroundTint="@color/colorText"
+            android:textColorHint="@color/colorText" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_confirmationPassword_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:id="@+id/input_confirmationPassword_signup"
-        android:layout_below="@+id/input_password_signup"
-        android:hint="Confirmição da senha"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/input_layout_password_signup">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/input_confirmationPassword_signup"
+            android:hint="Confirmição da senha"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="false"
+            android:backgroundTint="@color/colorText"
+            android:textColorHint="@color/colorText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Que tipo de usuário é você?"
         android:textColor="@color/colorText"
-        android:textIsSelectable="false"
-        android:backgroundTint="@color/colorText"
-        android:textColorHint="@color/colorText" />
+        android:id="@+id/text_userType_signup"
+        android:layout_below="@+id/input_layout_confirmationPassword_signup"
+        android:layout_marginTop="25dp"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_userType_signup"
+        android:layout_below="@id/text_userType_signup"
+        >
+
+    </Spinner>
 
     <Button
         android:id="@+id/btn_signup_signup"
