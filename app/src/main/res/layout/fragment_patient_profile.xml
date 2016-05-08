@@ -10,7 +10,7 @@
         android:id="@+id/image_profile_patientProfile"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:layout_margin="50dp"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true" />
 
     <android.support.v4.widget.NestedScrollView
@@ -39,7 +39,8 @@
                         android:layout_height="@dimen/material_icons"
                         android:id="@+id/icon_profile_patient"
                         android:background="@drawable/ic_account_circle_white_24dp"
-                        android:layout_marginLeft="@dimen/default_margin" />
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:contentDescription="@string/description_icon_profile"/>
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_name_patientProfile"
@@ -51,7 +52,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
                             android:ems="10"
-                            android:hint="Nome"
+                            android:hint="@string/hint_name"
                             android:id="@+id/input_name_patientProfile"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/colorText"
@@ -80,7 +81,8 @@
                         android:layout_height="@dimen/material_icons"
                         android:id="@+id/icon_email_patientProfile"
                         android:background="@drawable/ic_mail_white_24dp"
-                        android:layout_marginLeft="@dimen/default_margin" />
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:contentDescription="@string/description_icon_email" />
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_email_patientProfile"
@@ -93,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
                             android:ems="10"
-                            android:hint="Email"
+                            android:hint="@string/hint_email"
                             android:id="@+id/input_email_patientProfile"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/colorText"
@@ -123,7 +125,8 @@
                         android:layout_height="@dimen/material_icons"
                         android:id="@+id/icon_location_patientProfile"
                         android:background="@drawable/ic_location_on_white_24dp"
-                        android:layout_marginLeft="@dimen/default_margin" />
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:contentDescription="@string/description_icon_location" />
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_location_patientProfile"
@@ -136,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
                             android:ems="10"
-                            android:hint="Endereço"
+                            android:hint="@string/hint_address"
                             android:id="@+id/input_location_patientProfile"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/colorText"
@@ -165,7 +168,8 @@
                         android:layout_height="@dimen/material_icons"
                         android:id="@+id/icon_phone_patientProfile"
                         android:background="@drawable/ic_call_white_24dp"
-                        android:layout_marginLeft="@dimen/default_margin" />
+                        android:layout_marginLeft="@dimen/default_margin"
+                        android:contentDescription="@string/description_icon_phone" />
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_phone_patientProfile"
@@ -176,9 +180,9 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
+                            android:inputType="phone"
                             android:ems="10"
-                            android:hint="Telefone"
+                            android:hint="@string/hint_phone"
                             android:id="@+id/input_phone_patientProfile"
                             android:layout_gravity="center_horizontal"
                             android:textColor="@color/colorText"
@@ -196,7 +200,8 @@
                 android:background="@drawable/ic_accessibility_white_24dp"
                 android:layout_below="@+id/row_phone_patientProfile"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/description_icon_body" />
 
         </RelativeLayout>
 

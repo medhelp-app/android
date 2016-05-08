@@ -3,8 +3,23 @@
 
     <string name="hint_name">Nome</string>
     <string name="hint_email">Email</string>
+    <string name="hint_address">Endereço</string>
+    <string name="hint_phone">Telefone</string>
     <string name="hint_password">Senha</string>
+    <string name="hint_passwordConfirmation">Confirmação de senha</string>
+    <string name="hint_forgotPassword">Esqueceu sua senha?</string>
+    <string name="login">Entrar</string>
+    <string name="button_sign_up">Cadastre-se</string>
+    <string name="sign_up">Cadastrar</string>
 
+    <string name="description_logo">Imagem do logo MedHelp</string>
+    <string name="description_icon_profile">Icone de perfil</string>
+    <string name="description_icon_email">Icone de email</string>
+    <string name="description_icon_location">Icone de mapa</string>
+    <string name="description_icon_phone">Icone de telefone</string>
+    <string name="description_icon_body">Icone da visualização do corpo humano do usuário</string>
+
+    <string name="text_user_type">Que tipo de usuário é você?</string>
     <string-array name="user_type">
         <item>Paciente</item>
         <item>Médico</item>

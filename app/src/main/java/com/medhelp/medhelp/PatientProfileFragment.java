@@ -25,8 +25,6 @@ public class PatientProfileFragment extends Fragment {
     private int PICK_IMAGE_REQUEST = 1;
 
     private CircleImageView mProfileImage;
-    private EditText mNameText;
-    private EditText mEmailText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +38,11 @@ public class PatientProfileFragment extends Fragment {
 
         User user = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        mNameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
-        mEmailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
+        EditText nameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
+        EditText emailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
 
-        mNameText.setText(user.getName());
-        mEmailText.setText(user.getEmail());
+        nameText.setText(user.getName());
+        emailText.setText(user.getEmail());
 
         mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
 

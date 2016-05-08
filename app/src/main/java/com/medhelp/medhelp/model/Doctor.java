@@ -2,8 +2,8 @@ package com.medhelp.medhelp.model;
 
 public class Doctor extends User{
 
-    public void Doctor(String id, String name, String email) {
-        super.User(id, name, email);
+    public Doctor(String name, String email) {
+        super(name, email);
     }
 
     @Override

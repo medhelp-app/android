@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = null;
                 try {
-                    user = objectMapper.readValue(response.toString(), User.class);
+                    user = objectMapper.readValue(response, User.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (!TextUtils.isEmpty(errorMessage.get("error")))
+                if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("error")))
                     onLoginFailed(errorMessage.get("error"));
                 else
                     onLoginFailed("Problema de conexão");

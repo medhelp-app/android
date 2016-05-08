@@ -2,16 +2,17 @@ package com.medhelp.medhelp.model;
 
 import java.io.Serializable;
 
-public abstract class User implements Serializable{
+public class User implements Serializable{
 
     protected String _id;
     protected String name;
     protected String email;
-
     protected EUserType userType;
 
-    public void User(String id, String name, String email) {
-        this._id = id;
+    public User() {
+    }
+
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
     }
@@ -24,5 +25,7 @@ public abstract class User implements Serializable{
         return name;
     }
 
-    public abstract EUserType getUserType();
+    public EUserType getUserType() {
+        return userType;
+    }
 }
