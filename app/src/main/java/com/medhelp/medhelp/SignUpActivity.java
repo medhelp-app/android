@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
+import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 import com.medhelp.medhelp.model.User;
 
@@ -32,9 +33,6 @@ import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-
-    // TODO: Change url to production
-    private static final String SIGNUP_URL = "http://192.168.1.3:4000/api/users";
 
     @Bind(R.id.input_name_signup) EditText _nameText;
     @Bind(R.id.input_email_signup) EditText _emailText;
@@ -74,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void register(final String name, final String email, final String password, final String passwordConfirmation) {
-        StringRequest request = new StringRequest(Request.Method.POST, SIGNUP_URL, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLHelper.SIGNUP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Cadastro realizado com sucesso");

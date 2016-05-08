@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
+import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 import com.medhelp.medhelp.model.User;
 
@@ -34,9 +35,6 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-
-    // TODO: Change url to production
-    private static final String LOGIN_URL = "http://192.168.1.3:4000/api/users/login";
 
     @Bind(R.id.input_email_login) EditText _emailText;
     @Bind(R.id.input_password_login) EditText _passwordText;
@@ -91,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void authenticate(final String email, final String password) {
-        StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, URLHelper.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Login realizado com sucesso");
