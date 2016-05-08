@@ -43,8 +43,8 @@ public class PatientProfileFragment extends Fragment {
         mNameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
         mEmailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
 
-        mNameText.setText(user.name);
-        mEmailText.setText(user.email);
+        mNameText.setText(user.getName());
+        mEmailText.setText(user.getEmail());
 
         mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
 
