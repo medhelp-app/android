@@ -10,8 +10,8 @@ import com.medhelp.medhelp.adapters.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TabLayout _tabLayout;
-    private ViewPager _viewPager;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _tabLayout = (TabLayout) findViewById(R.id.sections_tab);
-        _viewPager = (ViewPager) findViewById(R.id.view_pager_mainTab);
+        mTabLayout = (TabLayout) findViewById(R.id.sections_tab);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager_mainTab);
 
-        _viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_patientTab)));
-        _tabLayout.setupWithViewPager(_viewPager);
+        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_patientTab)));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
 }

@@ -10,7 +10,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.medhelp.medhelp.model.User;
 
 import java.io.IOException;
 
@@ -21,7 +24,9 @@ public class PatientProfileFragment extends Fragment {
     private static final String TAG = "PatientProfileFragment";
     private int PICK_IMAGE_REQUEST = 1;
 
-    private CircleImageView _profileImage;
+    private CircleImageView mProfileImage;
+    private EditText mNameText;
+    private EditText mEmailText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,17 +38,25 @@ public class PatientProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patient_profile, container, false);
 
-        _profileImage = (CircleImageView) view.findViewById(R.id.profile_image_patient);
+        User user = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        _profileImage.setOnClickListener(new View.OnClickListener() {
+        mNameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
+        mEmailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
+
+        mNameText.setText(user.name);
+        mEmailText.setText(user.email);
+
+        mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
+
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+            Intent intent = new Intent();
 
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), PICK_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), PICK_IMAGE_REQUEST);
             }
         });
 
@@ -61,7 +74,7 @@ public class PatientProfileFragment extends Fragment {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
 
-                _profileImage.setImageBitmap(bitmap);
+                mProfileImage.setImageBitmap(bitmap);
             } catch (IOException e) {
                 Toast.makeText(getActivity().getBaseContext(), "Não foi possível carregar a imagem", Toast.LENGTH_LONG).show();
             }

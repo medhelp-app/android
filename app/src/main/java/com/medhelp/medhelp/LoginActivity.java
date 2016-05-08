@@ -12,14 +12,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.authenticationValidator;
+import com.medhelp.medhelp.model.User;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.link_forgotPassword_login) TextView _forgotPasswordLink;
     @Bind(R.id.btn_login_login) Button _loginButton;
     @Bind(R.id.btn_signup_login) Button _signupButton;
-
-    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +96,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "Login realizado com sucesso");
 
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+                User user = null;
+                try {
+                    user = objectMapper.readValue(response.toString(), User.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         }, new Response.ErrorListener() {
@@ -101,10 +115,21 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Login falhou");
 
-                if (!TextUtils.isEmpty(error.getMessage()))
-                    onLoginFailed(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+                String stringError = new String(networkResponse.data);
+
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, String> errorMessage = null;
+                try {
+                     errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!TextUtils.isEmpty(errorMessage.get("error")))
+                    onLoginFailed(errorMessage.get("error"));
                 else
-                    onLoginFailed("Email ou senha inválidos");
+                    onLoginFailed("Problema de conexão");
             }
         }){
             @Override

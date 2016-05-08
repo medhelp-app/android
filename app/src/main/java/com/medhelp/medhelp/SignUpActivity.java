@@ -11,14 +11,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.authenticationValidator;
+import com.medhelp.medhelp.model.User;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +41,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Bind(R.id.input_password_signup) EditText _passwordText;
     @Bind(R.id.input_confirmationPassword_signup) EditText _passwordConfirmationText;
     @Bind(R.id.btn_signup_signup) Button _signupButton;
-
-    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +79,18 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "Cadastro realizado com sucesso");
 
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+                User user = null;
+                try {
+                    user = objectMapper.readValue(response.toString(), User.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         }, new Response.ErrorListener() {
@@ -84,10 +98,21 @@ public class SignUpActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Cadastro falhou");
 
-                if (!TextUtils.isEmpty(error.getMessage()))
-                    onLoginFailed(error.getMessage());
+                NetworkResponse networkResponse = error.networkResponse;
+                String stringError = new String(networkResponse.data);
+
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, String> errorMessage = null;
+                try {
+                    errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!TextUtils.isEmpty(errorMessage.get("error")))
+                    onSignupFailed(errorMessage.get("error"));
                 else
-                    onLoginFailed("Cadastro falhou");
+                    onSignupFailed("Problema de conexão");
             }
         }){
             @Override
@@ -150,7 +175,7 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    private void onLoginFailed(String message) {
+    private void onSignupFailed(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
     }

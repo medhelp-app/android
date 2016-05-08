@@ -19,12 +19,12 @@
         <item name="tabTextAppearance">@style/TabText</item>
         <item name="tabSelectedTextColor">@color/colorText</item>
         <item name="tabIndicatorColor">@color/colorText</item>
-        <item name="tabMode">scrollable</item>
+        <item name="tabMode">fixed</item>
         <item name="tabGravity">fill</item>
     </style>
 
     <style name="TabText" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/colorTextNotSelected</item>
     </style>
 
