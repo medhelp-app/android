@@ -12,6 +12,9 @@
     <string name="button_sign_up">Cadastre-se</string>
     <string name="sign_up">Cadastrar</string>
 
+    <string name="save">Salvar</string>
+    <string name="cancel">Cancelar</string>
+
     <string name="description_logo">Imagem do logo MedHelp</string>
     <string name="description_icon_profile">Icone de perfil</string>
     <string name="description_icon_email">Icone de email</string>
@@ -31,4 +34,6 @@
         <item>Arquivos</item>
         <item>Social</item>
     </string-array>
+    <string name="title_activity_edit_patient_profile">EditPatientProfileActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

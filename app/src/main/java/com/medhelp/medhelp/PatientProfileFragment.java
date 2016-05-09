@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,15 +35,29 @@ public class PatientProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patient_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_patient_profile, container, false);
 
-        User user = (User) getActivity().getIntent().getSerializableExtra("user");
+        final User user = (User) getActivity().getIntent().getSerializableExtra("user");
 
         EditText nameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
         EditText emailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
+        EditText locationText = (EditText) view.findViewById(R.id.input_location_patientProfile);
+        EditText phoneText = (EditText) view.findViewById(R.id.input_phone_patientProfile);
 
         nameText.setText(user.getName());
         emailText.setText(user.getEmail());
+        locationText.setText(user.getLocation());
+        phoneText.setText(user.getPhone());
+
+        FloatingActionButton fabEditPatient = (FloatingActionButton) view.findViewById(R.id.fab_edit_patient_patientProfile);
+        fabEditPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditPatientProfileActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
 
         mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
 

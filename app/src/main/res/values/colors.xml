@@ -2,10 +2,11 @@
 <resources>
     <color name="colorPrimary">#003366</color>
     <color name="colorPrimaryDark">#00264D</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#003366</color>
     <color name="colorBackground">#336699</color>
     <color name="colorButton">#003366</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorTextNotSelected">#A9A9A9</color>
     <color name="colorControlActivated">#FFFFFF</color>
+    <color name="colorControlHighlight">#FFFFFF</color>
 </resources>

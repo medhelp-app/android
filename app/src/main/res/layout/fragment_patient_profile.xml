@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -8,8 +9,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:src="@drawable/blank_profile"
         android:id="@+id/image_profile_patientProfile"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="@dimen/image_profile_width"
+        android:layout_height="@dimen/image_profile_height"
         android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true" />
 
@@ -28,6 +29,16 @@
                 android:id="@+id/row_name_patientProfile"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_centerHorizontal="true">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:src="@drawable/ic_border_color_white_24dp"
+                    app:fabSize="mini"
+                    android:id="@+id/fab_edit_patient_patientProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    app:layout_anchor="@id/row_name_patientProfile"
+                    app:layout_anchorGravity="bottom|right|end" />
 
                 <TableRow
                     android:layout_width="match_parent"
