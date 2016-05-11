@@ -1,22 +1,22 @@
 package com.medhelp.medhelp;
 
-import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.medhelp.medhelp.model.User;
-
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,14 +39,14 @@ public class PatientProfileFragment extends Fragment {
 
         final User user = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        EditText nameText = (EditText) view.findViewById(R.id.input_name_patientProfile);
-        EditText emailText = (EditText) view.findViewById(R.id.input_email_patientProfile);
-        EditText locationText = (EditText) view.findViewById(R.id.input_location_patientProfile);
-        EditText phoneText = (EditText) view.findViewById(R.id.input_phone_patientProfile);
+        TextView nameText = (TextView) view.findViewById(R.id.input_name_patientProfile);
+        TextView emailText = (TextView) view.findViewById(R.id.input_email_patientProfile);
+        TextView locationText = (TextView) view.findViewById(R.id.input_address_patientProfile);
+        TextView phoneText = (TextView) view.findViewById(R.id.input_phone_patientProfile);
 
         nameText.setText(user.getName());
         emailText.setText(user.getEmail());
-        locationText.setText(user.getLocation());
+        locationText.setText(user.getAddress().toString());
         phoneText.setText(user.getPhone());
 
         FloatingActionButton fabEditPatient = (FloatingActionButton) view.findViewById(R.id.fab_edit_patient_patientProfile);
@@ -64,33 +64,30 @@ public class PatientProfileFragment extends Fragment {
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent();
-
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-
-            startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), PICK_IMAGE_REQUEST);
+            showDialogImage();
             }
         });
 
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void showDialogImage() {
+        Dialog builder = new Dialog(getActivity());
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.getWindow().setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-
-            Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-
-                mProfileImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                Toast.makeText(getActivity().getBaseContext(), "Não foi possível carregar a imagem", Toast.LENGTH_LONG).show();
             }
-        }
+        });
+
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setImageURI(Uri.parse("android.resource://com.medhelp.medhelp/drawable/blank_profile"));
+        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        builder.show();
     }
 }

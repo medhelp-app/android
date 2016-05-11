@@ -32,9 +32,17 @@ public class EditPatientProfileActivity extends Activity {
 
         EditText nameText = (EditText) findViewById(R.id.input_name_editPatientProfile);
         EditText emailText = (EditText) findViewById(R.id.input_email_editPatientProfile);
+        EditText streetName = (EditText) findViewById(R.id.input_streetName_editPatientProfile);
+        EditText zipCode = (EditText) findViewById(R.id.input_zipCode_editPatientProfile);
+        EditText state = (EditText) findViewById(R.id.input_state_editPatientProfile);
+        EditText country = (EditText) findViewById(R.id.input_country_editPatientProfile);
 
         nameText.setText(user.getName());
         emailText.setText(user.getEmail());
+        streetName.setText(user.getAddress().getStreetName());
+        zipCode.setText(user.getAddress().getZipCode());
+        state.setText(user.getAddress().getState());
+        country.setText(user.getAddress().getCountry());
 
         Button cancelButton = (Button) findViewById(R.id.button_cancel_editPatientProfile);
         cancelButton.setOnClickListener(new View.OnClickListener() {

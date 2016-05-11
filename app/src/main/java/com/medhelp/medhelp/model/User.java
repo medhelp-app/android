@@ -7,7 +7,7 @@ public class User implements Serializable{
     protected String _id;
     protected String name;
     protected String email;
-    protected String location;
+    protected Address address;
     protected String phone;
 
     protected EUserType userType;
@@ -20,6 +20,14 @@ public class User implements Serializable{
         this.email = email;
     }
 
+    public User(String _id, String name, String email, Address address, String phone) {
+        this._id = _id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -28,8 +36,8 @@ public class User implements Serializable{
         return name;
     }
 
-    public String getLocation() {
-        return location;
+    public Address getAddress() {
+        return address;
     }
 
     public String getPhone() {
@@ -44,8 +52,8 @@ public class User implements Serializable{
         this.email = email;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public void setPhone(String phone) {

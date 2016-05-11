@@ -4,6 +4,11 @@
     <string name="hint_name">Nome</string>
     <string name="hint_email">Email</string>
     <string name="hint_address">Endereço</string>
+    <string name="hint_streetName">Rua</string>
+    <string name="hint_zipCode">CEP</string>
+    <string name="hint_city">Cidade</string>
+    <string name="hint_state">Estado</string>
+    <string name="hint_country">País</string>
     <string name="hint_phone">Telefone</string>
     <string name="hint_password">Senha</string>
     <string name="hint_passwordConfirmation">Confirmação de senha</string>
