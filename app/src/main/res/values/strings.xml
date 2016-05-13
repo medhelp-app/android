@@ -17,6 +17,9 @@
     <string name="button_sign_up">Cadastre-se</string>
     <string name="sign_up">Cadastrar</string>
 
+    <string name="patient">Paciente</string>
+    <string name="doctor">Médico</string>
+
     <string name="save">Salvar</string>
     <string name="cancel">Cancelar</string>
 

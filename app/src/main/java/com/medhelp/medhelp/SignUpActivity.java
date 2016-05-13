@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,34 +31,28 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @Bind(R.id.input_name_signup) EditText _nameText;
-    @Bind(R.id.input_email_signup) EditText _emailText;
-    @Bind(R.id.input_password_signup) EditText _passwordText;
-    @Bind(R.id.input_confirmationPassword_signup) EditText _passwordConfirmationText;
-    @Bind(R.id.btn_signup_signup) Button _signupButton;
-    private Spinner mUserTypeSpinner;
+    private EditText mNameText;
+    private EditText mEmailText;
+    private EditText mPasswordText;
+    private EditText mPasswordConfirmationText;
+
+    private RadioGroup mUserTypeGroup;
+    private RadioButton mPatientRadio;
+    private RadioButton mDoctorRadio;
+
+    private Button mSignupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        ButterKnife.bind(this);
 
-        mUserTypeSpinner = (Spinner) findViewById(R.id.spinner_userType_signup);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.user_type, android.R.layout.simple_spinner_item);
+        initFields();
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mUserTypeSpinner.setAdapter(adapter);
-
-        _signupButton.setOnClickListener(new View.OnClickListener() {
+        mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup();
@@ -67,24 +61,41 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    private void initFields() {
+        mNameText = (EditText) findViewById(R.id.input_name_signup);
+        mEmailText = (EditText) findViewById(R.id.input_email_signup);
+        mPasswordText = (EditText) findViewById(R.id.input_password_signup);
+        mPasswordConfirmationText = (EditText) findViewById(R.id.input_confirmationPassword_signup);
+        mUserTypeGroup = (RadioGroup) findViewById(R.id.grup_userType_signup);
+
+        mSignupButton = (Button) findViewById(R.id.btn_signup_signup);
+    }
+
     private void signup() {
         Log.d(TAG, "Signup");
 
-        _signupButton.setEnabled(false);
+        mSignupButton.setEnabled(false);
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String passwordConfirmation = _passwordConfirmationText.getText().toString();
+        String name = mNameText.getText().toString();
+        String email = mEmailText.getText().toString();
+        String password = mPasswordText.getText().toString();
+        String passwordConfirmation = mPasswordConfirmationText.getText().toString();
+
+        mPatientRadio = (RadioButton) findViewById(R.id.radio_patient_signup);
+        mDoctorRadio = (RadioButton) findViewById(R.id.radio_doctor_signup);
 
         EUserType userType = EUserType.Patient;
-        if (mUserTypeSpinner.getSelectedItemPosition() == 1)
+        int selectedId = mUserTypeGroup.getCheckedRadioButtonId();
+        if (selectedId == mDoctorRadio.getId()) {
             userType = EUserType.Doctor;
+        } else if (selectedId == mPatientRadio.getId()) {
+            userType = EUserType.Patient;
+        }
 
         if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation))
             register(name, email, password, passwordConfirmation, userType);
         else
-            _signupButton.setEnabled(true);
+            mSignupButton.setEnabled(true);
     }
 
     private void register(final String name, final String email, final String password, final String passwordConfirmation, final EUserType userType) {
@@ -144,12 +155,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         AppController.getInstance().addToRequestQueue(request);
 
-        _signupButton.setEnabled(true);
+        mSignupButton.setEnabled(true);
     }
 
     private boolean validateName(String name) {
         if (TextUtils.isEmpty(name)) {
-            _nameText.setError("Campo obrigatório");
+            mNameText.setError("Campo obrigatório");
             return false;
         }
         return true;
@@ -157,7 +168,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean validateEmail(String email) {
         if (!authenticationValidator.isValidEmail(email)) {
-            _emailText.setError("Entre um email válido");
+            mEmailText.setError("Entre um email válido");
             return false;
         }
         return true;
@@ -167,7 +178,7 @@ public class SignUpActivity extends AppCompatActivity {
         try {
             authenticationValidator.isValidPassword(password);
         } catch (PasswordInvalidException ex) {
-            _passwordText.setError(ex.getMessage());
+            mPasswordText.setError(ex.getMessage());
             return false;
         }
 
@@ -178,12 +189,12 @@ public class SignUpActivity extends AppCompatActivity {
         try {
             authenticationValidator.isValidPassword(passwordConfirmation);
         } catch (PasswordInvalidException ex) {
-            _passwordConfirmationText.setError(ex.getMessage());
+            mPasswordConfirmationText.setError(ex.getMessage());
             return false;
         }
 
         if (!passwordConfirmation.equals(password)) {
-            _passwordConfirmationText.setError("Senhas devem ser iguais");
+            mPasswordConfirmationText.setError("Senhas devem ser iguais");
             return false;
         }
 
@@ -192,6 +203,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void onSignupFailed(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
-        _signupButton.setEnabled(true);
+        mSignupButton.setEnabled(true);
     }
 }
