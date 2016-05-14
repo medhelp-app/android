@@ -29,33 +29,31 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    @Bind(R.id.input_email_login) EditText _emailText;
-    @Bind(R.id.input_password_login) EditText _passwordText;
-    @Bind(R.id.link_forgotPassword_login) TextView _forgotPasswordLink;
-    @Bind(R.id.btn_login_login) Button _loginButton;
-    @Bind(R.id.btn_signup_login) Button _signupButton;
+    private EditText mEmailText;
+    private EditText mPasswordText;
+    private TextView mForgotPasswordLink;
+    private Button mLoginButton;
+    private Button mSignupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        initFields();
+
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
 
-        _signupButton.setOnClickListener(new View.OnClickListener(){
+        mSignupButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                  Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        _forgotPasswordLink.setOnClickListener(new View.OnClickListener() {
+        mForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: Start the Forgot Activity
@@ -73,19 +71,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void initFields() {
+        mEmailText = (EditText) findViewById(R.id.input_email_login);
+        mPasswordText = (EditText) findViewById(R.id.input_password_login);
+        mForgotPasswordLink = (TextView) findViewById(R.id.link_forgotPassword_login);
+        mLoginButton = (Button) findViewById(R.id.btn_login_login);
+        mSignupButton = (Button) findViewById(R.id.btn_signup_login);
+    }
+
     public void login() {
         Log.d(TAG, "Login");
+        mLoginButton.setEnabled(false);
 
-        _loginButton.setEnabled(false);
-
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String email = mEmailText.getText().toString();
+        String password = mPasswordText.getText().toString();
 
         if (validateEmail(email) && validatePassword(password))
             authenticate(email, password);
 
         else
-            _loginButton.setEnabled(true);
+            mLoginButton.setEnabled(true);
     }
 
     public void authenticate(final String email, final String password) {
@@ -119,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, String> errorMessage = null;
                 try {
-                     errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
+                    errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -142,12 +147,12 @@ public class LoginActivity extends AppCompatActivity {
 
         AppController.getInstance().addToRequestQueue(request);
 
-        _loginButton.setEnabled(true);
+        mLoginButton.setEnabled(true);
     }
 
     private boolean validateEmail(String email) {
         if (!authenticationValidator.isValidEmail(email)) {
-            _emailText.setError("Entre um email válido");
+            mEmailText.setError("Entre um email válido");
             return false;
         }
         return true;
@@ -158,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             authenticationValidator.isValidPassword(password);
 
         } catch (PasswordInvalidException ex) {
-            _passwordText.setError(ex.getMessage());
+            mPasswordText.setError(ex.getMessage());
             return false;
         }
 
@@ -167,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoginFailed(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
-        _loginButton.setEnabled(true);
+        mLoginButton.setEnabled(true);
     }
 
 }
