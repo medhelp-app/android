@@ -13,12 +13,15 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.URLHelper;
@@ -79,60 +82,41 @@ public class LoginActivity extends AppCompatActivity {
         mSignupButton = (Button) findViewById(R.id.btn_signup_login);
     }
 
-    public void login() {
+    private void login() {
         Log.d(TAG, "Login");
         mLoginButton.setEnabled(false);
 
         String email = mEmailText.getText().toString();
         String password = mPasswordText.getText().toString();
 
-        if (validateEmail(email) && validatePassword(password))
+        if (validateEmail(email) && validatePassword(password)) {
             authenticate(email, password);
-
-        else
+        }
+        else {
             mLoginButton.setEnabled(true);
+        }
     }
 
-    public void authenticate(final String email, final String password) {
+    private void authenticate(final String email, final String password) {
         StringRequest request = new StringRequest(Request.Method.POST, URLHelper.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Login realizado com sucesso");
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                User user = parseResponseJSON(response);
 
-                User user = null;
-                try {
-                    user = objectMapper.readValue(response, User.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (user != null) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
                 }
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Login falhou");
 
-                NetworkResponse networkResponse = error.networkResponse;
-                String stringError = new String(networkResponse.data);
-
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, String> errorMessage = null;
-                try {
-                    errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("error")))
-                    onLoginFailed(errorMessage.get("error"));
-                else
-                    onLoginFailed("Problema de conexão");
+                handleError(error);
             }
         }){
             @Override
@@ -148,6 +132,54 @@ public class LoginActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
 
         mLoginButton.setEnabled(true);
+    }
+
+    private User parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        User user = null;
+
+        try {
+            JsonNode jsonResponse = objectMapper.readTree(response);
+            JsonNode jsonUser = jsonResponse.path("user");
+            JsonNode jsonApikey = jsonResponse.path("token");
+
+            user = objectMapper.readValue(String.valueOf(jsonUser), User.class);
+            user.setApiKey(objectMapper.readValue(String.valueOf(jsonApikey), String.class));
+        } catch (IOException e) {
+            onLoginFailed("Ocorreu um erro na comunicação com o servidor");
+        }
+
+        return user;
+    }
+
+    private void handleError(VolleyError error) {
+        if (error instanceof TimeoutError) {
+            onLoginFailed("Erro de tempo de resposta");
+        } else if (error instanceof NoConnectionError) {
+            onLoginFailed("Falha na conexão com o servidor");
+        } else {
+            NetworkResponse networkResponse = error.networkResponse;
+            String stringError = new String(networkResponse.data);
+
+            parseErrorJSON(stringError);
+        }
+    }
+
+    private void parseErrorJSON(String stringError) {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> errorMessage = null;
+        try {
+            errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("error")))
+            onLoginFailed(errorMessage.get("error"));
+        else
+            onLoginFailed("Problema de conexão");
     }
 
     private boolean validateEmail(String email) {

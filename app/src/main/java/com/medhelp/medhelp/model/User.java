@@ -12,6 +12,8 @@ public class User implements Serializable{
 
     protected EUserType userType;
 
+    protected String apiKey;
+
     public User() {
     }
 
@@ -44,6 +46,10 @@ public class User implements Serializable{
         return phone;
     }
 
+    public String getApiKey() {
+        return apiKey;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -58,6 +64,10 @@ public class User implements Serializable{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 
     public EUserType getUserType() {
