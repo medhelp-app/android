@@ -16,7 +16,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.User;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,6 +39,12 @@ public class PatientProfileFragment extends Fragment {
     private int PICK_IMAGE_REQUEST = 1;
 
     private CircleImageView mProfileImage;
+
+    private User mUser;
+    private TextView nameText;
+    private TextView emailText;
+    private TextView locationText;
+    private TextView phoneText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,24 +56,20 @@ public class PatientProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_patient_profile, container, false);
 
-        final User user = (User) getActivity().getIntent().getSerializableExtra("user");
+        mUser = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        TextView nameText = (TextView) view.findViewById(R.id.input_name_patientProfile);
-        TextView emailText = (TextView) view.findViewById(R.id.input_email_patientProfile);
-        TextView locationText = (TextView) view.findViewById(R.id.input_address_patientProfile);
-        TextView phoneText = (TextView) view.findViewById(R.id.input_phone_patientProfile);
+        getUser();
 
-        nameText.setText(user.getName());
-        emailText.setText(user.getEmail());
-        locationText.setText(user.getAddress().toString());
-        phoneText.setText(user.getPhone());
+        initFields(view);
+
+        populateFields(mUser);
 
         FloatingActionButton fabEditPatient = (FloatingActionButton) view.findViewById(R.id.fab_edit_patient_patientProfile);
         fabEditPatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), EditPatientProfileActivity.class);
-                intent.putExtra("user", user);
+                intent.putExtra("user", mUser);
                 startActivity(intent);
             }
         });
@@ -69,6 +84,63 @@ public class PatientProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void initFields(View view) {
+        nameText = (TextView) view.findViewById(R.id.input_name_patientProfile);
+        emailText = (TextView) view.findViewById(R.id.input_email_patientProfile);
+        locationText = (TextView) view.findViewById(R.id.input_address_patientProfile);
+        phoneText = (TextView) view.findViewById(R.id.input_phone_patientProfile);
+    }
+
+    private void populateFields(User user) {
+        if (user != null) {
+            nameText.setText(user.getName());
+            emailText.setText(user.getEmail());
+            locationText.setText(String.valueOf(user.getFullAddress()));
+            phoneText.setText(user.getPhone());
+        }
+    }
+
+    private void getUser() {
+        String patientUrl = URLHelper.GET_PATIENT_URL + "/" + mUser.get_id();
+        StringRequest request = new StringRequest(Request.Method.GET, patientUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                User user = parseResponseJSON(response);
+                populateFields(user);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+//                super.getHeaders();
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private User parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        User user = null;
+        try {
+            user = objectMapper.readValue(response, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     private void showDialogImage() {

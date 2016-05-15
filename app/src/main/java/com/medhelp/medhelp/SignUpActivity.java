@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -58,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
                 signup();
             }
         });
-
     }
 
     private void initFields() {
@@ -67,6 +68,9 @@ public class SignUpActivity extends AppCompatActivity {
         mPasswordText = (EditText) findViewById(R.id.input_password_signup);
         mPasswordConfirmationText = (EditText) findViewById(R.id.input_confirmationPassword_signup);
         mUserTypeGroup = (RadioGroup) findViewById(R.id.grup_userType_signup);
+
+        mPatientRadio = (RadioButton) findViewById(R.id.radio_patient_signup);
+        mDoctorRadio = (RadioButton) findViewById(R.id.radio_doctor_signup);
 
         mSignupButton = (Button) findViewById(R.id.btn_signup_signup);
     }
@@ -81,21 +85,20 @@ public class SignUpActivity extends AppCompatActivity {
         String password = mPasswordText.getText().toString();
         String passwordConfirmation = mPasswordConfirmationText.getText().toString();
 
-        mPatientRadio = (RadioButton) findViewById(R.id.radio_patient_signup);
-        mDoctorRadio = (RadioButton) findViewById(R.id.radio_doctor_signup);
 
         EUserType userType = EUserType.Patient;
-        int selectedId = mUserTypeGroup.getCheckedRadioButtonId();
-        if (selectedId == mDoctorRadio.getId()) {
+        if (mUserTypeGroup.getCheckedRadioButtonId() == mDoctorRadio.getId()) {
             userType = EUserType.Doctor;
-        } else if (selectedId == mPatientRadio.getId()) {
+        } else if (mUserTypeGroup.getCheckedRadioButtonId() == mPatientRadio.getId()) {
             userType = EUserType.Patient;
         }
 
-        if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation))
+        if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation)) {
             register(name, email, password, passwordConfirmation, userType);
-        else
+        }
+        else {
             mSignupButton.setEnabled(true);
+        }
     }
 
     private void register(final String name, final String email, final String password, final String passwordConfirmation, final EUserType userType) {
@@ -104,40 +107,19 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.d(TAG, "Cadastro realizado com sucesso");
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                User user = parseResponseJSON(response);
 
-                User user = null;
-                try {
-                    user = objectMapper.readValue(response, User.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (user != null) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
-
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Cadastro falhou");
 
-                NetworkResponse networkResponse = error.networkResponse;
-                String stringError = new String(networkResponse.data);
-
-                ObjectMapper mapper = new ObjectMapper();
-                Map<String, String> errorMessage = null;
-                try {
-                    errorMessage = mapper.readValue(stringError, new TypeReference<Map<String,String>>() { });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("error")))
-                    onSignupFailed(errorMessage.get("error"));
-                else
-                    onSignupFailed("Problema de conexão");
+                handleError(error);
             }
         }){
             @Override
@@ -156,6 +138,51 @@ public class SignUpActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(request);
 
         mSignupButton.setEnabled(true);
+    }
+
+    private void handleError(VolleyError error) {
+        if (error instanceof TimeoutError) {
+            onSignupFailed("Erro de tempo de resposta");
+        } else if (error instanceof NoConnectionError) {
+            onSignupFailed("Falha na conexão com o servidor");
+        } else {
+            parseErrorJSON(error);
+        }
+    }
+
+    private void parseErrorJSON(VolleyError error) {
+        NetworkResponse networkResponse = error.networkResponse;
+        String stringError = new String(networkResponse.data);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> errorMessage = null;
+        try {
+            errorMessage = mapper.readValue(stringError, new TypeReference<Map<String, String>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("error"))) {
+            onSignupFailed(errorMessage.get("error"));
+        }
+        else {
+            onSignupFailed("Problema de conexão");
+        }
+    }
+
+    private User parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        User user = null;
+        try {
+            user = objectMapper.readValue(response, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     private boolean validateName(String name) {

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 import com.medhelp.medhelp.model.User;
@@ -146,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
             JsonNode jsonApikey = jsonResponse.path("token");
 
             user = objectMapper.readValue(String.valueOf(jsonUser), User.class);
-            user.setApiKey(objectMapper.readValue(String.valueOf(jsonApikey), String.class));
+            ApiKeyHelper.setApiKey(objectMapper.readValue(String.valueOf(jsonApikey), String.class));
         } catch (IOException e) {
             onLoginFailed("Ocorreu um erro na comunicação com o servidor");
         }
