@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
@@ -131,10 +132,17 @@ public class EditPatientProfileActivity extends Activity {
     private void savePatient(final String name, final String email, final String streetName,
                              final String zipCode, final String city, final String state,
                              final String country, final String phone) {
-        StringRequest request = new StringRequest(Request.Method.POST, URLHelper.LOGIN_URL, new Response.Listener<String>() {
+        String patientUrl = URLHelper.SAVE_PATIENT_URL + "/" + mUser.get_id();
+        StringRequest request = new StringRequest(Request.Method.PUT, patientUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                boolean success = parseSaveUserResponseJSON(response);
 
+                if (success) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("user", mUser);
+                    startActivity(intent);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -143,11 +151,19 @@ public class EditPatientProfileActivity extends Activity {
             }
         }) {
             @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("name", name);
                 params.put("email", email);
-                params.put("streetName", streetName);
+                params.put("addressStreet", streetName);
                 params.put("city", city);
                 params.put("zipCode", zipCode);
                 params.put("state", state);
@@ -160,6 +176,19 @@ public class EditPatientProfileActivity extends Activity {
 
         AppController.getInstance().addToRequestQueue(request);
     }
+
+    private boolean parseSaveUserResponseJSON(String response) {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> message = null;
+        try {
+            message = mapper.readValue(response, new TypeReference<Map<String,String>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return message.get("sucess").equals("ok");
+    }
+
 
     private void initFields(User user) {
         mProfileImage = (CircleImageView) findViewById(R.id.image_profile_editPatientProfile);
