@@ -58,7 +58,7 @@ public class PatientProfileFragment extends Fragment {
 
         mUser = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        getUser();
+        loadUserFromService();
 
         initFields(view);
 
@@ -102,7 +102,7 @@ public class PatientProfileFragment extends Fragment {
         }
     }
 
-    private void getUser() {
+    private void loadUserFromService() {
         String patientUrl = URLHelper.GET_PATIENT_URL + "/" + mUser.get_id();
         StringRequest request = new StringRequest(Request.Method.GET, patientUrl, new Response.Listener<String>() {
             @Override
@@ -118,7 +118,6 @@ public class PatientProfileFragment extends Fragment {
         }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-//                super.getHeaders();
                 Map<String, String> params = new HashMap<>();
                 params.put("x-access-token", ApiKeyHelper.getApiKey());
 

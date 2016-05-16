@@ -16,6 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.User;
 
@@ -31,21 +34,26 @@ public class EditPatientProfileActivity extends Activity {
 
     private CircleImageView mProfileImage;
 
-    private EditText emailText;
-    private EditText nameText;
-    private EditText streetName;
-    private EditText zipCode;
-    private EditText city;
-    private EditText state;
-    private EditText country;
+    private EditText mEmailText;
+    private EditText mNameText;
+    private EditText mStreetName;
+    private EditText mZipCode;
+    private EditText mCity;
+    private EditText mState;
+    private EditText mCountry;
+    private EditText mPhone;
+
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_patient_profile);
 
-        User user = (User) getIntent().getSerializableExtra("user");
-        initFields(user);
+        mUser = (User) getIntent().getSerializableExtra("user");
+        initFields(mUser);
+
+        loadUserFromService();
 
         Button cancelButton = (Button) findViewById(R.id.button_cancel_editPatientProfile);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +67,10 @@ public class EditPatientProfileActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                savePatient(nameText.getText().toString(), emailText.getText().toString(),
-                        streetName.getText().toString(), zipCode.getText().toString(),
-                        city.getText().toString(), state.getText().toString(), country.getText().toString());
+                savePatient(mNameText.getText().toString(), mEmailText.getText().toString(),
+                        mStreetName.getText().toString(), mZipCode.getText().toString(),
+                        mCity.getText().toString(), mState.getText().toString(),
+                        mCountry.getText().toString(), mPhone.getText().toString());
             }
         });
 
@@ -79,8 +88,49 @@ public class EditPatientProfileActivity extends Activity {
         });
     }
 
+    private void loadUserFromService() {
+        String patientUrl = URLHelper.GET_PATIENT_URL + "/" + mUser.get_id();
+        StringRequest request = new StringRequest(Request.Method.GET, patientUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                User user = parseResponseJSON(response);
+                populateFields(user);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private User parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        User user = null;
+        try {
+            user = objectMapper.readValue(response, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
     private void savePatient(final String name, final String email, final String streetName,
-                             final String zipCode, final String city, final String state, final String country) {
+                             final String zipCode, final String city, final String state,
+                             final String country, final String phone) {
         StringRequest request = new StringRequest(Request.Method.POST, URLHelper.LOGIN_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -98,9 +148,11 @@ public class EditPatientProfileActivity extends Activity {
                 params.put("name", name);
                 params.put("email", email);
                 params.put("streetName", streetName);
+                params.put("city", city);
                 params.put("zipCode", zipCode);
                 params.put("state", state);
                 params.put("country", country);
+                params.put("phone", phone);
 
                 return params;
             }
@@ -112,21 +164,32 @@ public class EditPatientProfileActivity extends Activity {
     private void initFields(User user) {
         mProfileImage = (CircleImageView) findViewById(R.id.image_profile_editPatientProfile);
 
-        nameText = (EditText) findViewById(R.id.input_name_editPatientProfile);
-        emailText = (EditText) findViewById(R.id.input_email_editPatientProfile);
-        streetName = (EditText) findViewById(R.id.input_streetName_editPatientProfile);
-        city = (EditText) findViewById(R.id.input_city_editPatientProfile);
-        zipCode = (EditText) findViewById(R.id.input_zipCode_editPatientProfile);
-        state = (EditText) findViewById(R.id.input_state_editPatientProfile);
-        country = (EditText) findViewById(R.id.input_country_editPatientProfile);
+        mNameText = (EditText) findViewById(R.id.input_name_editPatientProfile);
+        mEmailText = (EditText) findViewById(R.id.input_email_editPatientProfile);
+        mStreetName = (EditText) findViewById(R.id.input_streetName_editPatientProfile);
+        mCity = (EditText) findViewById(R.id.input_city_editPatientProfile);
+        mZipCode = (EditText) findViewById(R.id.input_zipCode_editPatientProfile);
+        mState = (EditText) findViewById(R.id.input_state_editPatientProfile);
+        mCountry = (EditText) findViewById(R.id.input_country_editPatientProfile);
 
-        nameText.setText(user.getName());
-        emailText.setText(user.getEmail());
+        mPhone = (EditText) findViewById(R.id.input_phone_editPatientProfile);
 
-        streetName.setText(user.getAddressStreet());
-        zipCode.setText(user.getZipCode());
-        state.setText(user.getState());
-        country.setText(user.getCountry());
+        populateFields(user);
+    }
+
+    private void populateFields(User user) {
+        if (user != null) {
+            mNameText.setText(user.getName());
+            mEmailText.setText(user.getEmail());
+
+            mStreetName.setText(user.getAddressStreet());
+            mCity.setText(user.getCity());
+            mZipCode.setText(user.getZipCode());
+            mState.setText(user.getState());
+            mCountry.setText(user.getCountry());
+
+            mPhone.setText(user.getPhone());
+        }
     }
 
     @Override
