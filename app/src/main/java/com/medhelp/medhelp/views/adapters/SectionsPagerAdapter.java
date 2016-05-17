@@ -1,13 +1,13 @@
-package com.medhelp.medhelp.adapters;
+package com.medhelp.medhelp.views.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.medhelp.medhelp.PatientDoctorFragment;
-import com.medhelp.medhelp.PatientFilesFragment;
-import com.medhelp.medhelp.PatientProfileFragment;
-import com.medhelp.medhelp.PatientSocialFragment;
+import com.medhelp.medhelp.fragments.patient.PatientDoctorFragment;
+import com.medhelp.medhelp.fragments.patient.PatientFilesFragment;
+import com.medhelp.medhelp.fragments.patient.PatientProfileFragment;
+import com.medhelp.medhelp.fragments.patient.PatientSocialFragment;
 
 public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
