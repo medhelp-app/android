@@ -23,10 +23,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.activities.doctor.MainDoctorActivity;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
+import com.medhelp.medhelp.model.EUserType;
 import com.medhelp.medhelp.model.User;
 
 import java.io.IOException;
@@ -107,9 +109,15 @@ public class LoginActivity extends AppCompatActivity {
                 User user = parseResponseJSON(response);
 
                 if (user != null) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("user", user);
-                    startActivity(intent);
+                    if (user.getUserType() == EUserType.Patient) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                    } else if (user.getUserType() == EUserType.Doctor) {
+                        Intent intent = new Intent(getApplicationContext(), MainDoctorActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                    }
                 }
             }
         }, new Response.ErrorListener() {

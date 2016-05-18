@@ -42,6 +42,15 @@
         <item>Arquivos</item>
         <item>Social</item>
     </string-array>
+
+    <string-array name="titles_doctorTab">
+        <item>Perfil</item>
+        <item>Pacientes</item>
+        <item>Prescrição</item>
+        <item>Social</item>
+    </string-array>
+
     <string name="title_activity_edit_patient_profile">EditPatientProfileActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_main_doctor">MainDoctorActivity</string>
+
 </resources>

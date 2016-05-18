@@ -32,8 +32,13 @@
         <activity
             android:name=".EditPatientProfileActivity"
             android:configChanges="orientation"
+            android:label="@string/title_activity_edit_patient_profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.doctor.MainDoctorActivity"
+            android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_edit_patient_profile" />
+            android:label="@string/title_activity_main_doctor" />
     </application>
 
 </manifest>
