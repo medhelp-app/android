@@ -80,6 +80,7 @@ public class DoctorProfileFragment extends Fragment {
     private void initFields(View view) {
         mNameText = (TextView) view.findViewById(R.id.input_name_doctorProfile);
         mEmailText = (TextView) view.findViewById(R.id.input_email_doctorProfile);
+        mCRMText = (TextView) view.findViewById(R.id.input_crm_doctorProfile);
         mLocationText = (TextView) view.findViewById(R.id.input_address_doctorProfile);
         mPhoneText = (TextView) view.findViewById(R.id.input_phone_doctorProfile);
     }
@@ -88,6 +89,7 @@ public class DoctorProfileFragment extends Fragment {
         if (doctor != null) {
             mNameText.setText(doctor.getName());
             mEmailText.setText(doctor.getEmail());
+            mCRMText.setText(doctor.getCrm());
             mLocationText.setText(String.valueOf(doctor.getFullAddress()));
             mPhoneText.setText(doctor.getPhone());
         }
