@@ -3,6 +3,7 @@
 
     <string name="hint_name">Nome</string>
     <string name="hint_email">Email</string>
+    <string name="hint_crm">CRM</string>
     <string name="hint_address">Endereço</string>
     <string name="hint_streetName">Rua</string>
     <string name="hint_zipCode">CEP</string>
@@ -50,7 +51,7 @@
         <item>Social</item>
     </string-array>
 
-    <string name="title_activity_edit_patient_profile">EditPatientProfileActivity</string>
-    <string name="title_activity_main_doctor">MainDoctorActivity</string>
+    <string name="title_activity_edit_patient_profile">Editar Perfil</string>
+    <string name="title_activity_edit_doctor_profile">Editar Perfil</string>
 
 </resources>

@@ -25,156 +25,151 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/layout_userInfo_patientProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
-            <android.support.v4.widget.NestedScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/layout_name_patientProfile">
-
-                        <ImageView
-                            android:layout_width="@dimen/material_icons"
-                            android:layout_height="@dimen/material_icons"
-                            android:layout_margin="@dimen/default_margin"
-                            android:layout_gravity="center"
-                            android:id="@+id/icon_profile_patient"
-                            android:background="@drawable/ic_account_circle_white_24dp"
-                            android:contentDescription="@string/description_icon_profile" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="10"
-                            android:hint="@string/hint_name"
-                            android:id="@+id/input_name_patientProfile"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorText"
-                            android:backgroundTint="@color/colorText"
-                            android:textColorHint="@color/colorText"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_below="@id/layout_name_patientProfile"
-                        android:id="@+id/layout_email_patientProfile">
-
-                        <ImageView
-                            android:layout_width="@dimen/material_icons"
-                            android:layout_height="@dimen/material_icons"
-                            android:layout_margin="@dimen/default_margin"
-                            android:layout_gravity="center"
-                            android:id="@+id/icon_email_patientProfile"
-                            android:background="@drawable/ic_mail_white_24dp"
-                            android:contentDescription="@string/description_icon_email" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="10"
-                            android:hint="@string/hint_email"
-                            android:id="@+id/input_email_patientProfile"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorText"
-                            android:backgroundTint="@color/colorText"
-                            android:textColorHint="@color/colorText"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_below="@id/layout_email_patientProfile"
-                        android:id="@+id/layout_address_patientProfile"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/material_icons"
-                            android:layout_height="@dimen/material_icons"
-                            android:layout_margin="@dimen/default_margin"
-                            android:layout_gravity="center"
-                            android:id="@+id/icon_address_patientProfile"
-                            android:background="@drawable/ic_location_on_white_24dp"
-                            android:contentDescription="@string/description_icon_email" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="10"
-                            android:hint="@string/hint_address"
-                            android:id="@+id/input_address_patientProfile"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorText"
-                            android:backgroundTint="@color/colorText"
-                            android:textColorHint="@color/colorText"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_below="@id/layout_address_patientProfile"
-                        android:id="@+id/layout_phone_patientProfile"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/material_icons"
-                            android:layout_height="@dimen/material_icons"
-                            android:layout_margin="@dimen/default_margin"
-                            android:layout_gravity="center"
-                            android:id="@+id/icon_phone_patientProfile"
-                            android:background="@drawable/ic_call_white_24dp"
-                            android:contentDescription="@string/description_icon_email" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:ems="10"
-                            android:hint="@string/hint_phone"
-                            android:id="@+id/input_phone_patientProfile"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorText"
-                            android:backgroundTint="@color/colorText"
-                            android:textColorHint="@color/colorText"/>
-
-                    </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout_name_patientProfile">
 
                     <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:id="@+id/image_body_patientProfile"
-                        android:background="@drawable/ic_accessibility_white_24dp"
-                        android:layout_below="@+id/layout_phone_patientProfile"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:contentDescription="@string/description_icon_body" />
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_profile_patient"
+                        android:background="@drawable/ic_account_circle_white_24dp"
+                        android:contentDescription="@string/description_icon_profile" />
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_name"
+                        android:id="@+id/input_name_patientProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
 
-        </android.support.v4.widget.NestedScrollView>
+                </LinearLayout>
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_name_patientProfile"
+                    android:id="@+id/layout_email_patientProfile">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_email_patientProfile"
+                        android:background="@drawable/ic_mail_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_email"
+                        android:id="@+id/input_email_patientProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_email_patientProfile"
+                    android:id="@+id/layout_address_patientProfile"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_address_patientProfile"
+                        android:background="@drawable/ic_location_on_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_address"
+                        android:id="@+id/input_address_patientProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_address_patientProfile"
+                    android:id="@+id/layout_phone_patientProfile"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_phone_patientProfile"
+                        android:background="@drawable/ic_call_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_phone"
+                        android:id="@+id/input_phone_patientProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/image_body_patientProfile"
+                    android:background="@drawable/ic_accessibility_white_24dp"
+                    android:layout_below="@+id/layout_phone_patientProfile"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/description_icon_body" />
+
+            </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
 
     </LinearLayout>
 

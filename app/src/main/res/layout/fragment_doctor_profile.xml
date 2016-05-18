@@ -1,7 +1,207 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.medhelp.medhelp.fragments.doctor.DoctorProfileFragment">
 
-</FrameLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layout_profileImage_doctorProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:orientation="horizontal" >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/blank_profile"
+                android:id="@+id/image_profile_doctorProfile"
+                android:layout_width="@dimen/image_profile_width"
+                android:layout_height="@dimen/image_profile_height"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/layout_userInfo_doctorProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout_name_doctorProfile">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_profile_doctor"
+                        android:background="@drawable/ic_account_circle_white_24dp"
+                        android:contentDescription="@string/description_icon_profile" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_name"
+                        android:id="@+id/input_name_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_name_doctorProfile"
+                    android:id="@+id/layout_email_doctorProfile">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_email_doctorProfile"
+                        android:background="@drawable/ic_mail_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_email"
+                        android:id="@+id/input_email_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_email_doctorProfile"
+                    android:id="@+id/layout_crm_doctorProfile">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_email_doctorProfile2"
+                        android:background="@drawable/ic_assignment_ind_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_crm"
+                        android:id="@+id/input_email_doctorProfile2"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_crm_doctorProfile"
+                    android:id="@+id/layout_address_doctorProfile"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_address_doctorProfile"
+                        android:background="@drawable/ic_location_on_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_address"
+                        android:id="@+id/input_address_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/layout_address_doctorProfile"
+                    android:id="@+id/layout_phone_doctorProfile"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_phone_doctorProfile"
+                        android:background="@drawable/ic_call_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_phone"
+                        android:id="@+id/input_phone_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:id="@+id/fab_edit_doctor_doctorProfile"
+        android:clickable="true"
+        android:src="@drawable/ic_border_color_white_24dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/layout_userInfo_doctorProfile"
+        app:layout_anchorGravity="bottom|right|top"/>
+
+</android.support.design.widget.CoordinatorLayout>
