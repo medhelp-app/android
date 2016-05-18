@@ -27,6 +27,7 @@
     <string name="description_logo">Imagem do logo MedHelp</string>
     <string name="description_icon_profile">Icone de perfil</string>
     <string name="description_icon_email">Icone de email</string>
+    <string name="description_icon_crm">Icone de CRM</string>
     <string name="description_icon_location">Icone de mapa</string>
     <string name="description_icon_phone">Icone de telefone</string>
     <string name="description_icon_body">Icone da visualização do corpo humano do usuário</string>

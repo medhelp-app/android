@@ -107,9 +107,9 @@
                         android:layout_height="@dimen/material_icons"
                         android:layout_margin="@dimen/default_margin"
                         android:layout_gravity="center"
-                        android:id="@+id/icon_email_doctorProfile2"
+                        android:id="@+id/icon_crm_doctorProfile"
                         android:background="@drawable/ic_assignment_ind_white_24dp"
-                        android:contentDescription="@string/description_icon_email" />
+                        android:contentDescription="@string/description_icon_crm" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                         android:layout_gravity="center"
                         android:ems="10"
                         android:hint="@string/hint_crm"
-                        android:id="@+id/input_email_doctorProfile2"
+                        android:id="@+id/input_crm_doctorProfile"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorText"
                         android:backgroundTint="@color/colorText"
