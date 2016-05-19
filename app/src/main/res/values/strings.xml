@@ -54,5 +54,6 @@
 
     <string name="title_activity_edit_patient_profile">Editar Perfil</string>
     <string name="title_activity_edit_doctor_profile">Editar Perfil</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

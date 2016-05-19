@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="no_margin">0dp</dimen>
     <dimen name="tab_max_width">264dp</dimen>
 
     <dimen name="material_icons">24dp</dimen>
