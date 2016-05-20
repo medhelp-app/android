@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
+import com.medhelp.medhelp.helpers.SHA;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 import com.medhelp.medhelp.model.EUserType;
@@ -127,8 +128,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("name", name);
                 params.put("email", email);
-                params.put("password", password);
-                params.put("rePassword", passwordConfirmation);
+                params.put("password", SHA.Hash(password));
+                params.put("rePassword", SHA.Hash(passwordConfirmation));
                 params.put("userType", String.valueOf(userType.getValue()));
 
                 return params;

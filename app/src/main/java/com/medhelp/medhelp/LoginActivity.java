@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.activities.doctor.MainDoctorActivity;
 import com.medhelp.medhelp.exceptions.PasswordInvalidException;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.SHA;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.authenticationValidator;
 import com.medhelp.medhelp.model.EUserType;
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
-                params.put("password", password);
+                params.put("password", SHA.Hash(password));
 
                 return params;
             }
