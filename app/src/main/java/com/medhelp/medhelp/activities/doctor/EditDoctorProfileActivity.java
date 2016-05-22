@@ -37,6 +37,7 @@ public class EditDoctorProfileActivity extends Activity {
     private EditText mNameText;
     private EditText mEmailText;
     private EditText mCrmText;
+    private EditText mCrmStateText;
     private EditText mStreetName;
     private EditText mZipCode;
     private EditText mCity;
@@ -72,7 +73,7 @@ public class EditDoctorProfileActivity extends Activity {
                         mCrmText.getText().toString(), mStreetName.getText().toString(),
                         mZipCode.getText().toString(), mCity.getText().toString(),
                         mState.getText().toString(), mCountry.getText().toString(),
-                        mPhone.getText().toString());
+                        mPhone.getText().toString(), mCrmStateText.getText().toString());
             }
         });
 
@@ -95,6 +96,7 @@ public class EditDoctorProfileActivity extends Activity {
         mNameText = (EditText) findViewById(R.id.input_name_editDoctorProfile);
         mEmailText = (EditText) findViewById(R.id.input_email_editDoctorProfile);
         mCrmText = (EditText) findViewById(R.id.input_crm_editDoctorProfile);
+        mCrmStateText = (EditText) findViewById(R.id.input_crm_uf_editDoctorProfile);
         mStreetName = (EditText) findViewById(R.id.input_streetName_editDoctorProfile);
         mCity = (EditText) findViewById(R.id.input_city_editDoctorProfile);
         mZipCode = (EditText) findViewById(R.id.input_zipCode_editDoctorProfile);
@@ -109,6 +111,7 @@ public class EditDoctorProfileActivity extends Activity {
             mNameText.setText(doctor.getName());
             mEmailText.setText(doctor.getEmail());
             mCrmText.setText(doctor.getCrm());
+            mCrmStateText.setText(doctor.getUfCrm());
 
             mStreetName.setText(doctor.getAddressStreet());
             mCity.setText(doctor.getCity());
@@ -162,7 +165,8 @@ public class EditDoctorProfileActivity extends Activity {
 
     private void saveDoctor(final String name, final String email, final String crm,
                             final String streetName, final String zipCode, final String city,
-                            final String state, final String country, final String phone) {
+                            final String state, final String country, final String phone,
+                            final String crmUf) {
         String doctorUrl = URLHelper.SAVE_DOCTOR_URL + "/" + mUser.get_id();
         StringRequest request = new StringRequest(Request.Method.PUT, doctorUrl, new Response.Listener<String>() {
             @Override
@@ -195,6 +199,7 @@ public class EditDoctorProfileActivity extends Activity {
                 params.put("name", name);
                 params.put("email", email);
                 params.put("crm", crm);
+                params.put("ufCrm", crmUf);
                 params.put("addressStreet", streetName);
                 params.put("city", city);
                 params.put("zipCode", zipCode);

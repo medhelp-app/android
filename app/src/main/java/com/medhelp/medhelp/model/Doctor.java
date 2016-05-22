@@ -3,6 +3,7 @@ package com.medhelp.medhelp.model;
 public class Doctor extends User{
 
     private String crm;
+    private String ufCrm;
 
     public Doctor() {
         // POJO default required constructor
@@ -21,7 +22,15 @@ public class Doctor extends User{
         return crm;
     }
 
+    public String getUfCrm() {
+        return ufCrm;
+    }
+
     public void setCrm(String crm) {
         this.crm = crm;
+    }
+
+    public void setUfCrm(String ufCrm) {
+        this.ufCrm = ufCrm;
     }
 }

@@ -3,7 +3,8 @@
 
     <string name="hint_name">Nome</string>
     <string name="hint_email">Email</string>
-    <string name="hint_crm">CRM</string>
+    <string name="hint_crm_number">CRM Número</string>
+    <string name="hint_crm_uf">CRM Estado</string>
     <string name="hint_address">Endereço</string>
     <string name="hint_streetName">Rua</string>
     <string name="hint_zipCode">CEP</string>

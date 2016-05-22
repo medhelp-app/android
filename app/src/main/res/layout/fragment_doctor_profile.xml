@@ -99,6 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
                     android:layout_below="@id/layout_email_doctorProfile"
                     android:id="@+id/layout_crm_doctorProfile">
 
@@ -112,16 +113,29 @@
                         android:contentDescription="@string/description_icon_crm" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:ems="10"
-                        android:hint="@string/hint_crm"
+                        android:hint="@string/hint_crm_number"
                         android:id="@+id/input_crm_doctorProfile"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorText"
                         android:backgroundTint="@color/colorText"
                         android:textColorHint="@color/colorText"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_crm_uf"
+                        android:id="@+id/input_crm_uf_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText" />
+
 
                 </LinearLayout>
 

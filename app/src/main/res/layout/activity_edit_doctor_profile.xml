@@ -121,10 +121,30 @@
                             android:layout_width="@dimen/material_icons"
                             android:layout_height="@dimen/material_icons"
                             android:id="@+id/icon_crm_editDoctorProfile"
-                            android:background="@drawable/ic_mail_white_24dp" />
+                            android:background="@drawable/ic_assignment_ind_white_24dp" />
 
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/input_layout_crm_editDoctorProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:ems="10"
+                                android:hint="@string/hint_crm_number"
+                                android:id="@+id/input_crm_editDoctorProfile"
+                                android:layout_gravity="center_horizontal"
+                                android:textColor="@color/colorText"
+                                android:backgroundTint="@color/colorText"
+                                android:textColorHint="@color/colorText"/>
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_crm_number_editDoctorProfile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -134,8 +154,8 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="text"
                                 android:ems="10"
-                                android:hint="@string/hint_crm"
-                                android:id="@+id/input_crm_editDoctorProfile"
+                                android:hint="@string/hint_crm_uf"
+                                android:id="@+id/input_crm_uf_editDoctorProfile"
                                 android:layout_gravity="center_horizontal"
                                 android:textColor="@color/colorText"
                                 android:backgroundTint="@color/colorText"
