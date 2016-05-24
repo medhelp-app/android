@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MedHelp</string>
 
+    <string name="hint_search">Médico ou especialidade</string>
+
     <string name="hint_name">Nome</string>
     <string name="hint_email">Email</string>
     <string name="hint_crm_number">CRM Número</string>

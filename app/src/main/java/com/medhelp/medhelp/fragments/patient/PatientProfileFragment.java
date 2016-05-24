@@ -61,7 +61,9 @@ public class PatientProfileFragment extends Fragment {
 
         mUser = (User) getActivity().getIntent().getSerializableExtra("user");
 
-        loadUserFromService();
+        if(mUser != null) {
+            loadUserFromService();
+        }
 
         initFields(view);
 

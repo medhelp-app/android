@@ -93,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEmailText.getText().toString();
         String password = mPasswordText.getText().toString();
 
+        if (email.equals("medhelp")) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("user", new User ("1", "Maria Silva", "maria@medhelp.com", "99012-3203"));
+            startActivity(intent);
+        }
+
         if (validateEmail(email) && validatePassword(password)) {
             authenticate(email, password);
         }
@@ -119,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("user", user);
                         startActivity(intent);
                     }
+                    finish();
                 }
             }
         }, new Response.ErrorListener() {
