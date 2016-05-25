@@ -142,6 +142,7 @@ public class EditPatientProfileActivity extends Activity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("user", mUser);
                     startActivity(intent);
+                    finish();
                 }
             }
         }, new Response.ErrorListener() {

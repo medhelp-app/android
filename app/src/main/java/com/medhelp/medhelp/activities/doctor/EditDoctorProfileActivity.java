@@ -177,6 +177,7 @@ public class EditDoctorProfileActivity extends Activity {
                     Intent intent = new Intent(getApplicationContext(), MainDoctorActivity.class);
                     intent.putExtra("user", mUser);
                     startActivity(intent);
+                    finish();
                 }
             }
         }, new Response.ErrorListener() {
