@@ -5,4 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fragments.patient.PatientDoctorFragment">
 
+    <ListView
+        android:id="@+id/list_doctors_patientDoctor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null" />
+
 </FrameLayout>

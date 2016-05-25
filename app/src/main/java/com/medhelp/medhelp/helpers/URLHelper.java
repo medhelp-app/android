@@ -14,4 +14,7 @@ public class URLHelper {
 
     public static final String SAVE_DOCTOR_URL = "https://medhelp-app.herokuapp.com/api/doctors";
 
+    public static final String DOCTOR_FIND_SUGGESTION_URL = "https://medhelp-app.herokuapp.com/api/doctors/find/suggestions";
+
+    public static final String DOCTOR_FIND_URL = "https://medhelp-app.herokuapp.com/api/doctors/find";
 }

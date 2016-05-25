@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
+
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -33,7 +36,8 @@ public class DoctorSuggestionProvider extends ContentProvider{
         if (mDoctors == null || mDoctors.isEmpty()){
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("https://raw.githubusercontent.com/CarlosRodrigo/project-euler/master/suggestions.json")
+                    .url(URLHelper.DOCTOR_FIND_SUGGESTION_URL)
+                    .addHeader("x-access-token", ApiKeyHelper.getApiKey())
                     .build();
 
             mDoctors = getSuggestionsFromService(client, request);

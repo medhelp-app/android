@@ -9,4 +9,6 @@
     <dimen name="material_icons">24dp</dimen>
     <dimen name="image_profile_width">96dp</dimen>
     <dimen name="image_profile_height">96dp</dimen>
+
+    <dimen name="text_size">16sp</dimen>
 </resources>
