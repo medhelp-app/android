@@ -1,4 +1,4 @@
-package com.medhelp.medhelp;
+package com.medhelp.medhelp.activities.patient;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +19,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.AppController;
+import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.User;

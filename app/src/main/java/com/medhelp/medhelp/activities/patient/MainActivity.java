@@ -1,10 +1,11 @@
-package com.medhelp.medhelp;
+package com.medhelp.medhelp.activities.patient;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.views.adapters.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {

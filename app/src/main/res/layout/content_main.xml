@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/no_margin"
     android:paddingRight="@dimen/no_margin"
     android:paddingTop="@dimen/no_margin"
-    tools:context="com.medhelp.medhelp.MainActivity"
+    tools:context=".activities.patient.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.v4.view.ViewPager

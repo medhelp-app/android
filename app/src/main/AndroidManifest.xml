@@ -33,7 +33,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.patient.MainActivity"
             android:configChanges="orientation"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan"
@@ -47,7 +47,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".EditPatientProfileActivity"
+            android:name=".activities.patient.EditPatientProfileActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_edit_patient_profile"
             android:screenOrientation="portrait" />

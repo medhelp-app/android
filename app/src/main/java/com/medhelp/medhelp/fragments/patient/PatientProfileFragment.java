@@ -24,7 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
-import com.medhelp.medhelp.EditPatientProfileActivity;
+import com.medhelp.medhelp.activities.patient.EditPatientProfileActivity;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
