@@ -3,6 +3,7 @@ package com.medhelp.medhelp.fragments.patient;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,8 +28,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.GoogleMap;
 import com.medhelp.medhelp.AppController;
-import com.medhelp.medhelp.activities.patient.MainActivity;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.activities.ViewDoctorProfileActivity;
+import com.medhelp.medhelp.activities.patient.MainActivity;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Doctor;
@@ -63,6 +67,15 @@ public class PatientDoctorFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.list_doctors_patientDoctor);
         mDoctors = new ArrayList<>();
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), ViewDoctorProfileActivity.class);
+                intent.putExtra("doctorId", mDoctors.get(i).get_id());
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -84,7 +97,6 @@ public class PatientDoctorFragment extends Fragment {
                         mDoctors = parseResponseJSON(response);
                         mDoctorListAdapter = new DoctorListAdapter(getActivity(), mDoctors);
                         mListView.setAdapter(mDoctorListAdapter);
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
