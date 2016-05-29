@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.activities.patient.EditPatientProfileActivity;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.activities.patient.PatientHumanBodyActivity;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.User;
@@ -85,6 +87,14 @@ public class PatientProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
             showDialogImage();
+            }
+        });
+
+        ImageButton imageButton = (ImageButton) view.findViewById(R.id.image_body_patientProfile);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity().getApplicationContext(), PatientHumanBodyActivity.class));
             }
         });
 

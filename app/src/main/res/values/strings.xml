@@ -35,6 +35,8 @@
     <string name="description_icon_phone">Icone de telefone</string>
     <string name="description_icon_body">Icone da visualização do corpo humano do usuário</string>
 
+    <string name="description_human_body">Corpo humano</string>
+
     <string name="text_user_type">Que tipo de usuário é você?</string>
     <string-array name="user_type">
         <item>Paciente</item>
@@ -58,5 +60,6 @@
     <string name="title_activity_edit_patient_profile">Editar Perfil</string>
     <string name="title_activity_edit_doctor_profile">Editar Perfil</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_patient_human_body">Corpo Humano</string>
 
 </resources>
