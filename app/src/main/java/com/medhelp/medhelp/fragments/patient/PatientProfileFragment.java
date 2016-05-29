@@ -94,7 +94,9 @@ public class PatientProfileFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity().getApplicationContext(), PatientHumanBodyActivity.class));
+                Intent intent = new Intent(getActivity().getApplicationContext(), PatientHumanBodyActivity.class);
+                intent.putExtra("patientId", mUser.get_id());
+                startActivity(intent);
             }
         });
 

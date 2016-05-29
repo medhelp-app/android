@@ -1,15 +1,33 @@
 package com.medhelp.medhelp.activities.patient;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
+import com.medhelp.medhelp.model.BodyPart;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PatientHumanBodyActivity extends Activity {
+
+    private String mPatientId = "574b6303d4e2f40300154fda";
+    private BodyPart[] mBodyParts;
 
     private ImageButton mBodyImage;
     private ImageButton mHeadImage;
@@ -25,7 +43,11 @@ public class PatientHumanBodyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_human_body);
 
+        mPatientId = (String) getIntent().getSerializableExtra("patientId");
+
         initFields();
+
+        getBodyPartsFromService();
 
         setBodyImages();
 
@@ -63,6 +85,44 @@ public class PatientHumanBodyActivity extends Activity {
                 return false;
             }
         });
+    }
+
+    private void getBodyPartsFromService() {
+        String url = URLHelper.GET_PATIENT_BODY_PARTS_URL.replace(":id", mPatientId);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                mBodyParts = parseResponseJSON(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private BodyPart[] parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        BodyPart[] parts = null;
+        try {
+            parts = objectMapper.readValue(response, BodyPart[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return parts;
     }
 
     private void setBodyImages() {
