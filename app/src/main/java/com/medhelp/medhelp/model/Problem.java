@@ -3,6 +3,7 @@ package com.medhelp.medhelp.model;
 public class Problem {
 
     String problem;
+    String severity;
     String description;
     String occurredDate;
 
@@ -16,6 +17,14 @@ public class Problem {
 
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
     }
 
     public String getDescription() {

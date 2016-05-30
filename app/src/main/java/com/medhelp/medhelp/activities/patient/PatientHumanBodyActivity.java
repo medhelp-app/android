@@ -1,11 +1,14 @@
 package com.medhelp.medhelp.activities.patient;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,9 +22,12 @@ import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.BodyPart;
+import com.medhelp.medhelp.model.Problem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PatientHumanBodyActivity extends Activity {
@@ -57,34 +63,74 @@ public class PatientHumanBodyActivity extends Activity {
                 float x = motionEvent.getX();
                 float y = motionEvent.getY();
 
-                if (x > 230 && y > 30 && x < 430 && y < 180) {
-                    Toast.makeText(getBaseContext(),"head", Toast.LENGTH_SHORT).show();
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        getBodyPartTouch(x, y);
+                        break;
                 }
 
-                else if (x > 200 && y > 180 && x < 450 && y < 350) {
-                    Toast.makeText(getBaseContext(),"chest", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (x > 200 && y > 180 && x < 450 && y < 520) {
-                    Toast.makeText(getBaseContext(),"abs", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (x > 30 && y > 180 && x < 150 && y < 620) {
-                    Toast.makeText(getBaseContext(),"rightArm", Toast.LENGTH_SHORT).show();
-                } else if (x > 460 && y > 180 && x < 630 && y < 620) {
-                    Toast.makeText(getBaseContext(),"leftArm", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (x > 200 && y > 520 && x < 300 && y < 1000) {
-                    Toast.makeText(getBaseContext(),"rightLeg", Toast.LENGTH_SHORT).show();
-                } else if (x > 300 && y > 520 && x < 460 && y < 1000) {
-                    Toast.makeText(getBaseContext(),"leftLeg", Toast.LENGTH_SHORT).show();
-                }
-
-                Toast.makeText(getBaseContext(), String.valueOf(motionEvent.getX()) + ", " + String.valueOf(motionEvent.getY()), Toast.LENGTH_LONG).show();
                 return false;
             }
         });
+    }
+
+    private void getBodyPartTouch(float x, float y) {
+        //Head
+        if (x > 230 && y > 30 && x < 430 && y < 180) {
+            List<Problem> problems = mBodyParts[6].getProblems();
+            createProblemsListDialog(problems);
+        }
+
+        //Chest
+        else if (x > 200 && y > 180 && x < 450 && y < 350) {
+            List<Problem> problems = mBodyParts[5].getProblems();
+            createProblemsListDialog(problems);
+        }
+
+        //Abs
+        else if (x > 200 && y > 180 && x < 450 && y < 520) {
+            List<Problem> problems = mBodyParts[4].getProblems();
+            createProblemsListDialog(problems);
+        }
+
+        // RightArm
+        else if (x > 30 && y > 180 && x < 150 && y < 620) {
+            List<Problem> problems = mBodyParts[0].getProblems();
+            createProblemsListDialog(problems);
+        }//LeftArm
+        else if (x > 460 && y > 180 && x < 630 && y < 620) {
+            List<Problem> problems = mBodyParts[1].getProblems();
+            createProblemsListDialog(problems);
+        }
+
+        //RightLeg
+        else if (x > 200 && y > 520 && x < 300 && y < 1000) {
+            List<Problem> problems = mBodyParts[2].getProblems();
+            createProblemsListDialog(problems);
+        }//LeftLeg
+        else if (x > 300 && y > 520 && x < 460 && y < 1000) {
+            List<Problem> problems = mBodyParts[3].getProblems();
+            createProblemsListDialog(problems);
+        }
+    }
+
+    private void createProblemsListDialog(List<Problem> problems) {
+        List<String> problemsText = new ArrayList<>();
+        for (Problem problem : problems) {
+            problemsText.add(problem.getProblem());
+        }
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View convertView = inflater.inflate(R.layout.body_part_problems_list, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle("Problemas");
+
+        ListView lv = (ListView) convertView.findViewById(R.id.list_body_part_problems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(PatientHumanBodyActivity.this, android.R.layout.simple_list_item_1, problemsText);
+        lv.setAdapter(adapter);
+        alertDialog.show();
     }
 
     private void getBodyPartsFromService() {
