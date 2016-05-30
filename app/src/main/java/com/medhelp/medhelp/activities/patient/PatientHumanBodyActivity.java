@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.android.volley.AuthFailureError;
@@ -23,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.BodyPartHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.BodyPart;
 import com.medhelp.medhelp.model.EBodyType;
@@ -48,6 +52,14 @@ public class PatientHumanBodyActivity extends Activity {
     private ImageButton mLeftArmImage;
     private ImageButton mRightLegImage;
     private ImageButton mLeftLegImage;
+
+    private EditText mDialogProblemText;
+    private EditText mDialogDescriptionText;
+    private RadioGroup mDialogSeverityRadio;
+    private RadioButton mDialogLowButton;
+    private RadioButton mDialogMediumButton;
+    private RadioButton mDialogHighButton;
+    private Spinner mDialogBodyParts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,27 +92,7 @@ public class PatientHumanBodyActivity extends Activity {
         fabAddProblem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this, R.style.AppCompatAlertDialogStyle);
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_add_body_part_problem, null);
-                alertDialog.setView(dialogView);
-
-                Spinner bodyParts = (Spinner) dialogView.findViewById(R.id.spinner_body_part);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(PatientHumanBodyActivity.this, R.array.body_parts, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                bodyParts.setAdapter(adapter);
-
-                alertDialog.setPositiveButton("Adicionar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO: Call webservice
-                    }
-                });
-
-                alertDialog.setNegativeButton("Cancelar", null);
-
-                alertDialog.create();
-                alertDialog.show();
+                createAddProblemDialog();
             }
         });
     }
@@ -276,6 +268,89 @@ public class PatientHumanBodyActivity extends Activity {
             }
         }
         return severityProblem;
+    }
+
+    private void createAddProblemDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this, R.style.AppCompatAlertDialogStyle);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_body_part_problem, null);
+        alertDialog.setView(dialogView);
+
+        mDialogBodyParts = (Spinner) dialogView.findViewById(R.id.spinner_body_part);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(PatientHumanBodyActivity.this, R.array.body_parts, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mDialogBodyParts.setAdapter(adapter);
+
+        mDialogProblemText = (EditText) dialogView.findViewById(R.id.input_problem);
+        mDialogDescriptionText = (EditText) dialogView.findViewById(R.id.input_description);
+        mDialogSeverityRadio = (RadioGroup) dialogView.findViewById(R.id.group_severity_problem);
+        mDialogLowButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_low);
+        mDialogMediumButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_medium);
+        mDialogHighButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_high);
+
+        alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String severityProblem = getSelectedSeverity(mDialogSeverityRadio, mDialogLowButton, mDialogMediumButton, mDialogHighButton);
+                String part = mDialogBodyParts.getSelectedItem().toString();
+                String problem = mDialogProblemText.getText().toString();
+                String description = mDialogDescriptionText.getText().toString();
+
+                callService(BodyPartHelper.mBodyPartsMap.get(part).getValue(), problem, description, severityProblem);
+            }
+        });
+
+        alertDialog.setNegativeButton(R.string.cancel, null);
+
+        alertDialog.create();
+        alertDialog.show();
+    }
+
+    private String getSelectedSeverity(RadioGroup severityRadio, RadioButton lowButton, RadioButton mediumButton, RadioButton highButton) {
+        if(severityRadio.getCheckedRadioButtonId() == lowButton.getId()) {
+            return ESeverityProblem.Low.getValue();
+        } else if (severityRadio.getCheckedRadioButtonId() == mediumButton.getId()) {
+            return ESeverityProblem.Medium.getValue();
+        } else if (severityRadio.getCheckedRadioButtonId() == highButton.getId()) {
+            return ESeverityProblem.High.getValue();
+        }
+        return ESeverityProblem.Low.getValue();
+    }
+
+    private void callService(final String part, final String problem, final String description, final String severity) {
+        String url = URLHelper.ADD_PATIENT_BODY_PART_PROBLEM_URL.replace(":id", mPatientId);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                getBodyPartsFromService();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("part", part);
+                params.put("problem", problem);
+                params.put("description", description);
+                params.put("severity", severity);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
     }
 
 }
