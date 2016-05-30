@@ -22,6 +22,8 @@ import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.BodyPart;
+import com.medhelp.medhelp.model.EBodyType;
+import com.medhelp.medhelp.model.ESeverityProblem;
 import com.medhelp.medhelp.model.Problem;
 
 import java.io.IOException;
@@ -32,8 +34,8 @@ import java.util.Map;
 
 public class PatientHumanBodyActivity extends Activity {
 
-    private String mPatientId = "574b6303d4e2f40300154fda";
-    private BodyPart[] mBodyParts;
+    private String mPatientId;
+    private HashMap<String, BodyPart> mBodyParts = new HashMap<>();
 
     private ImageButton mBodyImage;
     private ImageButton mHeadImage;
@@ -55,8 +57,6 @@ public class PatientHumanBodyActivity extends Activity {
 
         getBodyPartsFromService();
 
-        setBodyImages();
-
         mLeftLegImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -74,42 +74,53 @@ public class PatientHumanBodyActivity extends Activity {
         });
     }
 
+    private void initFields() {
+        mBodyImage = (ImageButton) findViewById(R.id.humanBody);
+        mHeadImage = (ImageButton) findViewById(R.id.head_humanBody);
+        mChestImage = (ImageButton) findViewById(R.id.chest_humanBody);
+        mAbsImage = (ImageButton) findViewById(R.id.abs_humanBody);
+        mRightArmImage = (ImageButton) findViewById(R.id.right_arm_humanBody);
+        mLeftArmImage = (ImageButton) findViewById(R.id.left_arm_humanBody);
+        mRightLegImage = (ImageButton) findViewById(R.id.right_leg_humanBody);
+        mLeftLegImage = (ImageButton) findViewById(R.id.left_leg_humanBody);
+    }
+
     private void getBodyPartTouch(float x, float y) {
         //Head
         if (x > 230 && y > 30 && x < 430 && y < 180) {
-            List<Problem> problems = mBodyParts[6].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.Head.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //Chest
         else if (x > 200 && y > 180 && x < 450 && y < 350) {
-            List<Problem> problems = mBodyParts[5].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.Chest.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //Abs
         else if (x > 200 && y > 180 && x < 450 && y < 520) {
-            List<Problem> problems = mBodyParts[4].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.Abs.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         // RightArm
         else if (x > 30 && y > 180 && x < 150 && y < 620) {
-            List<Problem> problems = mBodyParts[0].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.RightArm.getValue()).getProblems();
             createProblemsListDialog(problems);
         }//LeftArm
         else if (x > 460 && y > 180 && x < 630 && y < 620) {
-            List<Problem> problems = mBodyParts[1].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.LeftArm.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //RightLeg
         else if (x > 200 && y > 520 && x < 300 && y < 1000) {
-            List<Problem> problems = mBodyParts[2].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.RightLeg.getValue()).getProblems();
             createProblemsListDialog(problems);
         }//LeftLeg
         else if (x > 300 && y > 520 && x < 460 && y < 1000) {
-            List<Problem> problems = mBodyParts[3].getProblems();
+            List<Problem> problems = mBodyParts.get(EBodyType.LeftLeg.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
     }
@@ -138,7 +149,8 @@ public class PatientHumanBodyActivity extends Activity {
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                mBodyParts = parseResponseJSON(response);
+                parseResponseJSON(response);
+                setBodyImages();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -168,28 +180,71 @@ public class PatientHumanBodyActivity extends Activity {
             e.printStackTrace();
         }
 
+        if (parts != null) {
+            for (BodyPart part : parts)
+                mBodyParts.put(part.getPart(), part);
+        }
+
         return parts;
     }
 
     private void setBodyImages() {
-        mHeadImage.setImageResource(R.drawable.body_head_red);
-        mChestImage.setImageResource(R.drawable.body_chest_yellow);
-        mAbsImage.setImageResource(R.drawable.body_abs_red);
-        mRightArmImage.setImageResource(R.drawable.body_right_arm_red);
-        mLeftArmImage.setImageResource(R.drawable.body_left_arm_red);
-        mRightLegImage.setImageResource(R.drawable.body_right_leg_yellow);
-        mLeftLegImage.setImageResource(R.drawable.body_left_leg_yellow);
+        if (mBodyParts.get(EBodyType.Head.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.Head.getValue()), mHeadImage,
+                    R.drawable.body_head_red, R.drawable.body_head_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.Chest.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.Chest.getValue()), mChestImage,
+                    R.drawable.body_chest_red, R.drawable.body_chest_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.Abs.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.Abs.getValue()), mAbsImage,
+                    R.drawable.body_abs_red, R.drawable.body_abs_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.RightArm.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.RightArm.getValue()), mRightArmImage,
+                    R.drawable.body_right_arm_red, R.drawable.body_right_arm_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.LeftArm.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.LeftArm.getValue()), mLeftArmImage,
+                    R.drawable.body_left_arm_red, R.drawable.body_left_arm_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.RightLeg.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.RightLeg.getValue()), mRightLegImage,
+                    R.drawable.body_right_leg_red, R.drawable.body_right_leg_yellow);
+        }
+
+        if (mBodyParts.get(EBodyType.LeftLeg.getValue()).getProblems().size() > 0) {
+            colorBodyPart(mBodyParts.get(EBodyType.LeftLeg.getValue()), mLeftLegImage,
+                    R.drawable.body_left_leg_red, R.drawable.body_left_leg_yellow);
+        }
     }
 
-    private void initFields() {
-        mBodyImage = (ImageButton) findViewById(R.id.humanBody);
-        mHeadImage = (ImageButton) findViewById(R.id.head_humanBody);
-        mChestImage = (ImageButton) findViewById(R.id.chest_humanBody);
-        mAbsImage = (ImageButton) findViewById(R.id.abs_humanBody);
-        mRightArmImage = (ImageButton) findViewById(R.id.right_arm_humanBody);
-        mLeftArmImage = (ImageButton) findViewById(R.id.left_arm_humanBody);
-        mRightLegImage = (ImageButton) findViewById(R.id.right_leg_humanBody);
-        mLeftLegImage = (ImageButton) findViewById(R.id.left_leg_humanBody);
+    private void colorBodyPart(BodyPart bodyPart, ImageButton bodyPartImage,
+                               int redDrawable, int yellowDrawable) {
+        ESeverityProblem severityProblem = getBodyColorFromSeverity(bodyPart.getProblems());
+        if (severityProblem == ESeverityProblem.High) {
+            bodyPartImage.setImageResource(redDrawable);
+        } else if (severityProblem == ESeverityProblem.Medium) {
+            bodyPartImage.setImageResource(yellowDrawable);
+        }
+    }
+
+    private ESeverityProblem getBodyColorFromSeverity(List<Problem> problems) {
+        ESeverityProblem severityProblem = ESeverityProblem.Low;
+        for (Problem problem : problems) {
+            if (ESeverityProblem.High.getValue().equals(problem.getSeverity())) {
+                return ESeverityProblem.High;
+            } else if(ESeverityProblem.Medium.getValue().equals(problem.getSeverity())) {
+                severityProblem = ESeverityProblem.Medium;
+            }
+        }
+        return severityProblem;
     }
 
 }
