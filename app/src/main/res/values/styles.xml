@@ -29,4 +29,10 @@
         <item name="android:textColor">@color/colorTextNotSelected</item>
     </style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorText</item>
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <item name="android:background">@color/colorBackground</item>
+    </style>
+
 </resources>

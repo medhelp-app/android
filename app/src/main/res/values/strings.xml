@@ -25,7 +25,16 @@
     <string name="doctor">Médico</string>
 
     <string name="save">Salvar</string>
+    <string name="add">Adicionar</string>
     <string name="cancel">Cancelar</string>
+
+    <string name="body_part">Parte do corpo</string>
+    <string name="problem">Problema</string>
+    <string name="description">Descrição do problema</string>
+    <string name="severity">Severidade</string>
+    <string name="low">Baixa</string>
+    <string name="medium">Média</string>
+    <string name="high">Alta</string>
 
     <string name="description_logo">Imagem do logo MedHelp</string>
     <string name="description_icon_profile">Icone de perfil</string>
@@ -56,6 +65,17 @@
         <item>Prescrição</item>
         <item>Social</item>
     </string-array>
+
+    <string-array name="body_parts">
+        <item>Cabeça</item>
+        <item>Peito</item>
+        <item>Abdómem</item>
+        <item>Braço direito</item>
+        <item>Braço esquerdo</item>
+        <item>Perna direita</item>
+        <item>Perna esquerda</item>
+    </string-array>
+
 
     <string name="title_activity_edit_patient_profile">Editar Perfil</string>
     <string name="title_activity_edit_doctor_profile">Editar Perfil</string>

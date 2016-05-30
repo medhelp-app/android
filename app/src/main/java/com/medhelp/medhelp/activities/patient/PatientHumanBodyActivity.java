@@ -1,14 +1,17 @@
 package com.medhelp.medhelp.activities.patient;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -70,6 +73,34 @@ public class PatientHumanBodyActivity extends Activity {
                 }
 
                 return false;
+            }
+        });
+
+        FloatingActionButton fabAddProblem = (FloatingActionButton) findViewById(R.id.fab_add_problem_humanBody);
+        fabAddProblem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this, R.style.AppCompatAlertDialogStyle);
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_add_body_part_problem, null);
+                alertDialog.setView(dialogView);
+
+                Spinner bodyParts = (Spinner) dialogView.findViewById(R.id.spinner_body_part);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(PatientHumanBodyActivity.this, R.array.body_parts, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                bodyParts.setAdapter(adapter);
+
+                alertDialog.setPositiveButton("Adicionar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // TODO: Call webservice
+                    }
+                });
+
+                alertDialog.setNegativeButton("Cancelar", null);
+
+                alertDialog.create();
+                alertDialog.show();
             }
         });
     }
