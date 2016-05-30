@@ -1,94 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.medhelp.medhelp.activities.patient.PatientHumanBodyActivity">
 
-    <ImageButton
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:src="@drawable/body_full_gray"
-        android:contentDescription="@string/description_human_body" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/body_full_gray"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/head_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/head_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/chest_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/chest_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/right_arm_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/right_arm_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/left_arm_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/left_arm_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/abs_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/abs_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/right_leg_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/right_leg_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
 
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:id="@+id/left_leg_humanBody"
-        android:background="@null"
-        android:scaleType="fitXY"
-        android:contentDescription="@string/description_human_body" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:id="@+id/left_leg_humanBody"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/description_human_body" />
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_gravity="bottom|end"
         android:id="@+id/fab_add_problem_humanBody"
-        android:src="@drawable/ic_add_white_24dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:src="@drawable/ic_add_white_24dp" />
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

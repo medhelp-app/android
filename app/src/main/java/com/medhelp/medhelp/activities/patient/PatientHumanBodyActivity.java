@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -322,6 +323,9 @@ public class PatientHumanBodyActivity extends Activity {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.fab_add_problem_humanBody), "Problema adicionado", Snackbar.LENGTH_LONG);
+                snackbar.show();
+
                 getBodyPartsFromService();
             }
         }, new Response.ErrorListener() {
