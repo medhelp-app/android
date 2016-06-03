@@ -16,6 +16,8 @@ public class User implements Serializable{
     protected String state;
     protected String country;
 
+    protected String profileImage;
+
     protected EUserType userType;
 
 
@@ -116,6 +118,14 @@ public class User implements Serializable{
         this.city = city;
         this.state = state;
         this.country = country;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getFullAddress() {

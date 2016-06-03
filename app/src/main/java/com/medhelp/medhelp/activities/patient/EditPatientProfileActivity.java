@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.helpers.VolleyMultiPartRequest;
 import com.medhelp.medhelp.model.User;
@@ -263,6 +264,9 @@ public class EditPatientProfileActivity extends Activity {
             mCountry.setText(user.getCountry());
 
             mPhone.setText(user.getPhone());
+
+            if (user.getProfileImage() != null)
+                mProfileImage.setImageBitmap(ImageHelper.decodeBase64ToImage(user.getProfileImage()));
         }
     }
 
