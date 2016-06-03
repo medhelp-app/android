@@ -1,9 +1,11 @@
 package com.medhelp.medhelp.fragments.doctor;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +16,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.activities.doctor.EditDoctorProfileActivity;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Doctor;
 import com.medhelp.medhelp.model.User;
@@ -35,6 +39,7 @@ public class DoctorProfileFragment extends Fragment {
     private int PICK_IMAGE_REQUEST = 1;
 
     private CircleImageView mProfileImage;
+    private Bitmap mProfileImageBitmap;
 
     private User mUser;
     private TextView mNameText;
@@ -62,6 +67,7 @@ public class DoctorProfileFragment extends Fragment {
         mUser = (User) getActivity().getIntent().getSerializableExtra("user");
 
         loadUserFromService();
+        loadImageFromService();
 
         initFields(view);
 
@@ -79,6 +85,7 @@ public class DoctorProfileFragment extends Fragment {
     }
 
     private void initFields(View view) {
+        mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_doctorProfile);
         mNameText = (TextView) view.findViewById(R.id.input_name_doctorProfile);
         mEmailText = (TextView) view.findViewById(R.id.input_email_doctorProfile);
         mCrmText = (TextView) view.findViewById(R.id.input_crm_doctorProfile);
@@ -99,8 +106,8 @@ public class DoctorProfileFragment extends Fragment {
     }
 
     private void loadUserFromService() {
-        String patientUrl = URLHelper.GET_DOCTOR_URL + "/" + mUser.get_id();
-        StringRequest request = new StringRequest(Request.Method.GET, patientUrl, new Response.Listener<String>() {
+        String doctorUrl = URLHelper.GET_DOCTOR_URL + "/" + mUser.get_id();
+        StringRequest request = new StringRequest(Request.Method.GET, doctorUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Doctor doctor = parseResponseJSON(response);
@@ -136,5 +143,48 @@ public class DoctorProfileFragment extends Fragment {
         }
 
         return doctor;
+    }
+
+    private void loadImageFromService() {
+        String imageUrl = URLHelper.GET_DOCTOR_IMAGE.replace(":id", mUser.get_id());
+
+        StringRequest request = new StringRequest(Request.Method.GET, imageUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                mProfileImageBitmap = getImage(response);
+                mProfileImage.setImageBitmap(mProfileImageBitmap);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private Bitmap getImage(String response) {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> responseMap = null;
+        try {
+            responseMap = mapper.readValue(response, new TypeReference<Map<String,String>>() { });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (responseMap != null && !TextUtils.isEmpty(responseMap.get("profileImage"))) {
+            return ImageHelper.decodeBase64ToImage(responseMap.get("profileImage"));
+        }
+
+        return null;
     }
 }

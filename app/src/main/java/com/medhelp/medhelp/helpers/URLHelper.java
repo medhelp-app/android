@@ -25,4 +25,8 @@ public class URLHelper {
     public static final String GET_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
 
     public static final String SAVE_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
+
+    public static final String GET_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/doctors/:id/image";
+
+    public static final String SAVE_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/doctors/:id/image";
 }

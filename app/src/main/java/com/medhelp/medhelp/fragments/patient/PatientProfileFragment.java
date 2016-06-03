@@ -193,15 +193,15 @@ public class PatientProfileFragment extends Fragment {
 
     private Bitmap getImage(String response) {
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> errorMessage = null;
+        Map<String, String> responseMap = null;
         try {
-            errorMessage = mapper.readValue(response, new TypeReference<Map<String,String>>() { });
+            responseMap = mapper.readValue(response, new TypeReference<Map<String,String>>() { });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (errorMessage != null && !TextUtils.isEmpty(errorMessage.get("profileImage"))) {
-            return ImageHelper.decodeBase64ToImage(errorMessage.get("profileImage"));
+        if (responseMap != null && !TextUtils.isEmpty(responseMap.get("profileImage"))) {
+            return ImageHelper.decodeBase64ToImage(responseMap.get("profileImage"));
         }
 
         return null;

@@ -2,12 +2,18 @@ package com.medhelp.medhelp.activities.doctor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,7 +24,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
+import com.medhelp.medhelp.helpers.VolleyMultiPartRequest;
 import com.medhelp.medhelp.model.Doctor;
 import com.medhelp.medhelp.model.User;
 
@@ -74,6 +82,8 @@ public class EditDoctorProfileActivity extends Activity {
                         mZipCode.getText().toString(), mCity.getText().toString(),
                         mState.getText().toString(), mCountry.getText().toString(),
                         mPhone.getText().toString(), mCrmStateText.getText().toString());
+
+                saveImage();
             }
         });
 
@@ -120,6 +130,10 @@ public class EditDoctorProfileActivity extends Activity {
             mCountry.setText(doctor.getCountry());
 
             mPhone.setText(doctor.getPhone());
+
+            if(doctor.getProfileImage() != null) {
+                mProfileImage.setImageBitmap(ImageHelper.decodeBase64ToImage(doctor.getProfileImage()));
+            }
         }
     }
 
@@ -224,7 +238,63 @@ public class EditDoctorProfileActivity extends Activity {
             e.printStackTrace();
         }
 
-        return message.get("sucess").equals("ok");
+        return message != null && !TextUtils.isEmpty(message.get("sucess")) && message.get("sucess").equals("ok");
+    }
+
+    private void saveImage() {
+        String url = URLHelper.SAVE_DOCTOR_IMAGE.replace(":id",mUser.get_id());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("x-access-token", ApiKeyHelper.getApiKey());
+        VolleyMultiPartRequest multiPartRequest = new VolleyMultiPartRequest(Request.Method.PUT, url, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String resultResponse = new String(response.data);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, params) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() throws AuthFailureError {
+                Map<String, DataPart> params = new HashMap<>();
+
+                params.put("profileImage", new DataPart("profileImage.jpg", VolleyMultiPartRequest.getFileDataFromDrawable(getBaseContext(), mProfileImage.getDrawable()), "image/jpeg"));
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(multiPartRequest);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                mProfileImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                Toast.makeText(getBaseContext(), "Não foi possível carregar a imagem", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }
