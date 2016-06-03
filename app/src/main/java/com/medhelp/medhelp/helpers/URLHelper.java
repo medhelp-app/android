@@ -21,4 +21,8 @@ public class URLHelper {
     public static final String GET_PATIENT_BODY_PARTS_URL = "https://medhelp-app.herokuapp.com/api/patients/:id/bodyparts";
 
     public static final String ADD_PATIENT_BODY_PART_PROBLEM_URL = "https://medhelp-app.herokuapp.com/api/patients/:id/bodyparts";
+
+    public static final String GET_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
+
+    public static final String SAVE_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
 }

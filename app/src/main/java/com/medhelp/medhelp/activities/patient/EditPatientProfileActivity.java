@@ -6,12 +6,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +25,7 @@ import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
+import com.medhelp.medhelp.helpers.VolleyMultiPartRequest;
 import com.medhelp.medhelp.model.User;
 
 import java.io.IOException;
@@ -74,9 +77,10 @@ public class EditPatientProfileActivity extends Activity {
                         mStreetName.getText().toString(), mZipCode.getText().toString(),
                         mCity.getText().toString(), mState.getText().toString(),
                         mCountry.getText().toString(), mPhone.getText().toString());
+
+                saveImage();
             }
         });
-
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +93,7 @@ public class EditPatientProfileActivity extends Activity {
                 startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), PICK_IMAGE_REQUEST);
             }
         });
+
     }
 
     private void loadUserFromService() {
@@ -189,9 +194,46 @@ public class EditPatientProfileActivity extends Activity {
             e.printStackTrace();
         }
 
-        return message.get("sucess").equals("ok");
+        return message != null && !TextUtils.isEmpty(message.get("sucess")) && message.get("sucess").equals("ok");
     }
 
+    private void saveImage() {
+        String url = URLHelper.SAVE_PATIENT_IMAGE.replace(":id",mUser.get_id());
+        HashMap<String, String> params = new HashMap<>();
+        params.put("x-access-token", ApiKeyHelper.getApiKey());
+        VolleyMultiPartRequest multiPartRequest = new VolleyMultiPartRequest(Request.Method.PUT, url, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String resultResponse = new String(response.data);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, params) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() throws AuthFailureError {
+                Map<String, DataPart> params = new HashMap<>();
+
+                params.put("profileImage", new DataPart("profileImage.jpg", VolleyMultiPartRequest.getFileDataFromDrawable(getBaseContext(), mProfileImage.getDrawable()), "image/jpeg"));
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(multiPartRequest);
+    }
 
     private void initFields(User user) {
         mProfileImage = (CircleImageView) findViewById(R.id.image_profile_editPatientProfile);
