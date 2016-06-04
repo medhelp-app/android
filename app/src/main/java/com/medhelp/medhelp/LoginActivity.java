@@ -1,5 +1,6 @@
 package com.medhelp.medhelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
     private Button mSignupButton;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,23 +92,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         Log.d(TAG, "Login");
-        mLoginButton.setEnabled(false);
 
-        String email = mEmailText.getText().toString();
-        String password = mPasswordText.getText().toString();
+        mProgressDialog = ProgressDialog.show(LoginActivity.this, "Por favor, aguarde", "Entrando", true);
+        mProgressDialog.setCancelable(false);
 
-        if (email.equals("medhelp")) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("user", new User ("1", "Maria Silva", "maria@medhelp.com", "99012-3203"));
-            startActivity(intent);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLoginButton.setEnabled(false);
 
-        if (validateEmail(email) && validatePassword(password)) {
-            authenticate(email, password);
-        }
-        else {
-            mLoginButton.setEnabled(true);
-        }
+                String email = mEmailText.getText().toString();
+                String password = mPasswordText.getText().toString();
+
+                if (validateEmail(email) && validatePassword(password)) {
+                    authenticate(email, password);
+                }
+                else {
+                    mLoginButton.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void authenticate(final String email, final String password) {
@@ -117,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 User user = parseResponseJSON(response);
 
                 if (user != null) {
+                    mProgressDialog.dismiss();
                     if (user.getUserType() == EUserType.Patient) {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("user", user);
@@ -133,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Login falhou");
-
+                mProgressDialog.dismiss();
                 handleError(error);
             }
         }){
@@ -202,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateEmail(String email) {
         if (!authenticationValidator.isValidEmail(email)) {
+            mProgressDialog.dismiss();
             mEmailText.setError("Entre um email válido");
             return false;
         }
@@ -211,8 +219,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validatePassword(String password) {
         try {
             authenticationValidator.isValidPassword(password);
-
         } catch (PasswordInvalidException ex) {
+            mProgressDialog.dismiss();
             mPasswordText.setError(ex.getMessage());
             return false;
         }

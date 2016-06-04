@@ -1,5 +1,6 @@
 package com.medhelp.medhelp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     private Button mSignupButton;
 
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,27 +82,34 @@ public class SignUpActivity extends AppCompatActivity {
     private void signup() {
         Log.d(TAG, "Signup");
 
-        mSignupButton.setEnabled(false);
+        mProgressDialog = ProgressDialog.show(SignUpActivity.this, "Por favor, aguarde", "Cadastrando", true);
+        mProgressDialog.setCancelable(false);
 
-        String name = mNameText.getText().toString();
-        String email = mEmailText.getText().toString();
-        String password = mPasswordText.getText().toString();
-        String passwordConfirmation = mPasswordConfirmationText.getText().toString();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mSignupButton.setEnabled(false);
 
+                String name = mNameText.getText().toString();
+                String email = mEmailText.getText().toString();
+                String password = mPasswordText.getText().toString();
+                String passwordConfirmation = mPasswordConfirmationText.getText().toString();
 
-        EUserType userType = EUserType.Patient;
-        if (mUserTypeGroup.getCheckedRadioButtonId() == mDoctorRadio.getId()) {
-            userType = EUserType.Doctor;
-        } else if (mUserTypeGroup.getCheckedRadioButtonId() == mPatientRadio.getId()) {
-            userType = EUserType.Patient;
-        }
+                EUserType userType = EUserType.Patient;
+                if (mUserTypeGroup.getCheckedRadioButtonId() == mDoctorRadio.getId()) {
+                    userType = EUserType.Doctor;
+                } else if (mUserTypeGroup.getCheckedRadioButtonId() == mPatientRadio.getId()) {
+                    userType = EUserType.Patient;
+                }
 
-        if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation)) {
-            register(name, email, password, passwordConfirmation, userType);
-        }
-        else {
-            mSignupButton.setEnabled(true);
-        }
+                if (validateName(name) && validateEmail(email) && validatePassword(password) && validatePasswordConfirmation(password, passwordConfirmation)) {
+                    register(name, email, password, passwordConfirmation, userType);
+                }
+                else {
+                    mSignupButton.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void register(final String name, final String email, final String password, final String passwordConfirmation, final EUserType userType) {
@@ -111,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
                 User user = parseResponseJSON(response);
 
                 if (user != null) {
+                    mProgressDialog.dismiss();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
@@ -120,7 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Cadastro falhou");
-
+                mProgressDialog.dismiss();
                 handleError(error);
             }
         }){
@@ -189,6 +200,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean validateName(String name) {
         if (TextUtils.isEmpty(name)) {
+            mProgressDialog.dismiss();
             mNameText.setError("Campo obrigatório");
             return false;
         }
@@ -197,6 +209,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean validateEmail(String email) {
         if (!authenticationValidator.isValidEmail(email)) {
+            mProgressDialog.dismiss();
             mEmailText.setError("Entre um email válido");
             return false;
         }
@@ -207,6 +220,7 @@ public class SignUpActivity extends AppCompatActivity {
         try {
             authenticationValidator.isValidPassword(password);
         } catch (PasswordInvalidException ex) {
+            mProgressDialog.dismiss();
             mPasswordText.setError(ex.getMessage());
             return false;
         }
@@ -218,11 +232,13 @@ public class SignUpActivity extends AppCompatActivity {
         try {
             authenticationValidator.isValidPassword(passwordConfirmation);
         } catch (PasswordInvalidException ex) {
+            mProgressDialog.dismiss();
             mPasswordConfirmationText.setError(ex.getMessage());
             return false;
         }
 
         if (!passwordConfirmation.equals(password)) {
+            mProgressDialog.dismiss();
             mPasswordConfirmationText.setError("Senhas devem ser iguais");
             return false;
         }
