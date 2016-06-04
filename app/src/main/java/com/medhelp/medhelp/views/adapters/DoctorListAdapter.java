@@ -9,9 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.model.Doctor;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DoctorListAdapter extends BaseAdapter {
 
@@ -47,12 +50,17 @@ public class DoctorListAdapter extends BaseAdapter {
         if (view == null)
             view = inflater.inflate(R.layout.doctor_item, null);
 
+        CircleImageView profileImage = (CircleImageView) view.findViewById(R.id.profilePic_doctorItem);
+
         TextView name = (TextView) view.findViewById(R.id.name_doctorItem);
         TextView timestamp = (TextView) view
                 .findViewById(R.id.email_doctorItem);
 
         Doctor doctor = doctors.get(i);
 
+        if (doctor.getProfileImage() != null) {
+            profileImage.setImageBitmap(ImageHelper.decodeBase64ToImage(doctor.getProfileImage()));
+        }
         name.setText(doctor.getName());
         timestamp.setText(doctor.getEmail());
 

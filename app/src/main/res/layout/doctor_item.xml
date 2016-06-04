@@ -22,14 +22,12 @@
             android:paddingLeft="@dimen/default_margin"
             android:paddingRight="@dimen/default_margin">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:id="@+id/profilePic_doctorItem"
                 android:background="@drawable/ic_account_circle_white_24dp"
-                android:contentDescription="@string/description_icon_profile"
-                android:scaleType="fitCenter" >
-            </ImageView>
+                android:contentDescription="@string/description_icon_profile" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
