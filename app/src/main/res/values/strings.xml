@@ -21,6 +21,10 @@
     <string name="button_sign_up">Cadastre-se</string>
     <string name="sign_up">Cadastrar</string>
 
+    <string name="hint_punctuality">Pontualidade</string>
+    <string name="hint_attention">Atenção</string>
+    <string name="hint_location">Instalações</string>
+
     <string name="patient">Paciente</string>
     <string name="doctor">Médico</string>
 
@@ -46,7 +50,8 @@
 
     <string name="description_human_body">Corpo humano</string>
 
-    <string name="text_user_type">Que tipo de usuário é você?</string>
+    <string name="evaluate">Opinar</string>
+
     <string-array name="user_type">
         <item>Paciente</item>
         <item>Médico</item>

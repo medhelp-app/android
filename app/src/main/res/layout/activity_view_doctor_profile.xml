@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scroll_vieDoctor"
     android:orientation="vertical"
     tools:context="com.medhelp.medhelp.activities.ViewDoctorProfileActivity">
 
@@ -10,7 +11,6 @@
         android:id="@+id/layout_profileImage_doctorProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"
         android:orientation="horizontal" >
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -24,8 +24,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/separator_margin"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
+            android:text="@string/hint_name"
             android:id="@+id/name_viewDoctor"
             android:layout_below="@+id/image_profile_doctorProfile"
             android:layout_centerHorizontal="true" />
@@ -34,27 +35,162 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
+            android:text="@string/hint_email"
             android:id="@+id/email_viewDoctor"
             android:layout_below="@+id/name_viewDoctor"
             android:layout_centerHorizontal="true" />
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_phone"
+            android:id="@+id/phone_viewDoctor"
+            android:layout_below="@+id/email_viewDoctor"
+            android:layout_centerHorizontal="true" />
 
-    <RelativeLayout
-        android:id="@+id/layout_userInfo_doctorProfile"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/phone_viewDoctor"
+            android:id="@+id/layout_rating_viewDoctor">
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingGeneral_viewDoctor"
+                android:isIndicator="true"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/separator_margin"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/opinions_count_viewDoctor"
+                android:layout_below="@id/ratingGeneral_viewDoctor"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:layout_width="@dimen/material_icons"
+                android:layout_height="@dimen/material_icons"
+                android:layout_margin="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:id="@+id/icon_ratingPunctuality_viewDoctor"
+                android:background="@drawable/ic_alarm_white_24dp"
+                android:contentDescription="@string/description_icon_email"
+                android:layout_below="@+id/opinions_count_viewDoctor"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:id="@+id/text_ratingPunctuality_viewDoctor"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/hint_punctuality"
+                android:textColor="@color/colorText"
+                android:layout_below="@+id/opinions_count_viewDoctor"
+                android:layout_toRightOf="@+id/icon_ratingPunctuality_viewDoctor"
+                android:layout_toEndOf="@+id/icon_ratingPunctuality_viewDoctor" />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingPunctuality_viewDoctor"
+                android:isIndicator="true"
+                android:layout_below="@+id/opinions_count_viewDoctor"
+                android:layout_toRightOf="@id/text_ratingPunctuality_viewDoctor" />
+
+            <ImageView
+                android:layout_width="@dimen/material_icons"
+                android:layout_height="@dimen/material_icons"
+                android:layout_margin="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:id="@+id/icon_ratingAttention_viewDoctor"
+                android:background="@drawable/ic_alarm_white_24dp"
+                android:contentDescription="@string/description_icon_email"
+                android:layout_below="@+id/icon_ratingPunctuality_viewDoctor"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/text_ratingAttention_viewDoctor"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/hint_attention"
+                android:textColor="@color/colorText"
+                android:layout_alignTop="@+id/icon_ratingAttention_viewDoctor"
+                android:layout_toRightOf="@+id/icon_ratingAttention_viewDoctor"
+                android:layout_toEndOf="@+id/icon_ratingAttention_viewDoctor" />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingAttention_viewDoctor"
+                android:isIndicator="true"
+                android:layout_below="@+id/ratingPunctuality_viewDoctor"
+                android:layout_toRightOf="@id/text_ratingPunctuality_viewDoctor" />
+
+            <ImageView
+                android:layout_width="@dimen/material_icons"
+                android:layout_height="@dimen/material_icons"
+                android:layout_margin="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:id="@+id/icon_ratingLocation_viewDoctor"
+                android:background="@drawable/ic_alarm_white_24dp"
+                android:contentDescription="@string/description_icon_email"
+                android:layout_below="@+id/icon_ratingAttention_viewDoctor"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/text_ratingLocation_viewDoctor"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/hint_location"
+                android:textColor="@color/colorText"
+                android:layout_alignBottom="@+id/icon_ratingLocation_viewDoctor"
+                android:layout_toRightOf="@+id/icon_ratingLocation_viewDoctor"
+                android:layout_toEndOf="@+id/icon_ratingLocation_viewDoctor" />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingLocation_viewDoctor"
+                android:isIndicator="true"
+                android:layout_below="@+id/icon_ratingAttention_viewDoctor"
+                android:layout_alignLeft="@+id/ratingAttention_viewDoctor"
+                android:layout_alignStart="@+id/ratingAttention_viewDoctor" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_rating_viewDoctor"
+            android:layout_margin="@dimen/default_margin"
+            android:id="@+id/text_address_viewDoctor"
+            android:gravity="center"
+            android:text="@string/hint_address"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/text_address_viewDoctor"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

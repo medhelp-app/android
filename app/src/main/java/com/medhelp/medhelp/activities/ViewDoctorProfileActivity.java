@@ -4,6 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Doctor;
 
@@ -30,12 +32,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ViewDoctorProfileActivity extends FragmentActivity {
 
     private String mDoctorId;
 
+    private CircleImageView mProfileImage;
     private TextView mNameText;
     private TextView mEmailText;
+    private TextView mPhoneText;
+
+    private AppCompatRatingBar mRatingGeneral;
+    private AppCompatRatingBar mRatingPunctuality;
+    private AppCompatRatingBar mRatingAttention;
+    private AppCompatRatingBar mRatingLocation;
 
     private GoogleMap mMap;
     private double mLongitude;
@@ -54,14 +65,26 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
     }
 
     private void initFields() {
+        mProfileImage = (CircleImageView) findViewById(R.id.image_profile_doctorProfile);
         mNameText = (TextView) findViewById(R.id.name_viewDoctor);
         mEmailText = (TextView) findViewById(R.id.email_viewDoctor);
+        mPhoneText = (TextView) findViewById(R.id.phone_viewDoctor);
+
+        mRatingGeneral = (AppCompatRatingBar) findViewById(R.id.ratingGeneral_viewDoctor);
+        mRatingPunctuality = (AppCompatRatingBar) findViewById(R.id.ratingPunctuality_viewDoctor);
+        mRatingAttention = (AppCompatRatingBar) findViewById(R.id.ratingAttention_viewDoctor);
+        mRatingLocation = (AppCompatRatingBar) findViewById(R.id.ratingLocation_viewDoctor);
     }
 
     private void populateFields(Doctor doctor) {
         if (doctor != null) {
             mNameText.setText(doctor.getName());
             mEmailText.setText(doctor.getEmail());
+            mPhoneText.setText(doctor.getPhone());
+
+            if (doctor.getProfileImage() != null) {
+                mProfileImage.setImageBitmap(ImageHelper.decodeBase64ToImage(doctor.getProfileImage()));
+            }
         }
     }
 
@@ -85,6 +108,7 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
                             LatLng address = new LatLng(mLatitude, mLongitude);
                             mMap.addMarker(new MarkerOptions().position(address).title(doctor.getAddressStreet()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(address));
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
                         }
                     });
                 }
