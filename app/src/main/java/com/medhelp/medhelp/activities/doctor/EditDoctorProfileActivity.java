@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,6 +46,7 @@ public class EditDoctorProfileActivity extends Activity {
 
     private EditText mNameText;
     private EditText mEmailText;
+    private EditText mDoctorTypeText;
     private EditText mCrmText;
     private EditText mCrmStateText;
     private EditText mStreetName;
@@ -61,7 +64,7 @@ public class EditDoctorProfileActivity extends Activity {
         setContentView(R.layout.activity_edit_doctor_profile);
 
         mUser = (User) getIntent().getSerializableExtra("user");
-        initFields(mUser);
+        initFields();
 
         loadUserFromService();
 
@@ -77,11 +80,12 @@ public class EditDoctorProfileActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDoctor(mNameText.getText().toString(), mEmailText.getText().toString(),
-                        mCrmText.getText().toString(), mStreetName.getText().toString(),
-                        mZipCode.getText().toString(), mCity.getText().toString(),
-                        mState.getText().toString(), mCountry.getText().toString(),
-                        mPhone.getText().toString(), mCrmStateText.getText().toString());
+                saveDoctor(mNameText.getText().toString(), mDoctorTypeText.getText().toString(),
+                        mEmailText.getText().toString(), mCrmText.getText().toString(),
+                        mStreetName.getText().toString(), mZipCode.getText().toString(),
+                        mCity.getText().toString(), mState.getText().toString(),
+                        mCountry.getText().toString(), mPhone.getText().toString(),
+                        mCrmStateText.getText().toString());
 
                 saveImage();
             }
@@ -100,11 +104,12 @@ public class EditDoctorProfileActivity extends Activity {
         });
     }
 
-    private void initFields(User user) {
+    private void initFields() {
         mProfileImage = (CircleImageView) findViewById(R.id.image_profile_editDoctorProfile);
 
         mNameText = (EditText) findViewById(R.id.input_name_editDoctorProfile);
         mEmailText = (EditText) findViewById(R.id.input_email_editDoctorProfile);
+        mDoctorTypeText = (EditText) findViewById(R.id.input_doctor_type_editDoctorProfile);
         mCrmText = (EditText) findViewById(R.id.input_crm_editDoctorProfile);
         mCrmStateText = (EditText) findViewById(R.id.input_crm_uf_editDoctorProfile);
         mStreetName = (EditText) findViewById(R.id.input_streetName_editDoctorProfile);
@@ -120,6 +125,7 @@ public class EditDoctorProfileActivity extends Activity {
         if (doctor != null) {
             mNameText.setText(doctor.getName());
             mEmailText.setText(doctor.getEmail());
+            mDoctorTypeText.setText(doctor.getDoctorType());
             mCrmText.setText(doctor.getCrm());
             mCrmStateText.setText(doctor.getUfCrm());
 
@@ -177,10 +183,10 @@ public class EditDoctorProfileActivity extends Activity {
         return doctor;
     }
 
-    private void saveDoctor(final String name, final String email, final String crm,
-                            final String streetName, final String zipCode, final String city,
-                            final String state, final String country, final String phone,
-                            final String crmUf) {
+    private void saveDoctor(final String name, final String email, final String doctorType,
+                            final String crm, final String streetName, final String zipCode,
+                            final String city, final String state, final String country,
+                            final String phone, final String crmUf) {
         String doctorUrl = URLHelper.SAVE_DOCTOR_URL + "/" + mUser.get_id();
         StringRequest request = new StringRequest(Request.Method.PUT, doctorUrl, new Response.Listener<String>() {
             @Override
@@ -197,7 +203,13 @@ public class EditDoctorProfileActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(), "Erro de tempo de resposta", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(), "Falha na conexão com o servidor", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Erro ao completar operação", Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override
@@ -213,6 +225,7 @@ public class EditDoctorProfileActivity extends Activity {
                 Map<String, String> params = new HashMap<>();
                 params.put("name", name);
                 params.put("email", email);
+                params.put("doctorType", doctorType);
                 params.put("crm", crm);
                 params.put("ufCrm", crmUf);
                 params.put("addressStreet", streetName);

@@ -44,6 +44,7 @@ public class DoctorProfileFragment extends Fragment {
     private User mUser;
     private TextView mNameText;
     private TextView mEmailText;
+    private TextView mDoctorTypeText;
     private TextView mCrmText;
     private TextView mCrmUfText;
     private TextView mLocationText;
@@ -87,6 +88,7 @@ public class DoctorProfileFragment extends Fragment {
     private void initFields(View view) {
         mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_doctorProfile);
         mNameText = (TextView) view.findViewById(R.id.input_name_doctorProfile);
+        mDoctorTypeText = (TextView) view.findViewById(R.id.input_doctor_type_doctorProfile);
         mEmailText = (TextView) view.findViewById(R.id.input_email_doctorProfile);
         mCrmText = (TextView) view.findViewById(R.id.input_crm_doctorProfile);
         mCrmUfText = (TextView) view.findViewById(R.id.input_crm_uf_doctorProfile);
@@ -98,6 +100,7 @@ public class DoctorProfileFragment extends Fragment {
         if (doctor != null) {
             mNameText.setText(doctor.getName());
             mEmailText.setText(doctor.getEmail());
+            mDoctorTypeText.setText(doctor.getDoctorType());
             mCrmText.setText(doctor.getCrm());
             mCrmUfText.setText(doctor.getUfCrm());
             mLocationText.setText(String.valueOf(doctor.getFullAddress()));

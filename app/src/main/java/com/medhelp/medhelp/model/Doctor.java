@@ -2,6 +2,7 @@ package com.medhelp.medhelp.model;
 
 public class Doctor extends User{
 
+    private String doctorType;
     private String crm;
     private String ufCrm;
 
@@ -32,5 +33,13 @@ public class Doctor extends User{
 
     public void setUfCrm(String ufCrm) {
         this.ufCrm = ufCrm;
+    }
+
+    public String getDoctorType() {
+        return doctorType;
+    }
+
+    public void setDoctorType(String doctorType) {
+        this.doctorType = doctorType;
     }
 }

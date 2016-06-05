@@ -99,8 +99,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
                     android:layout_below="@id/layout_email_doctorProfile"
+                    android:id="@+id/layout_doctor_type_doctorProfile">
+
+                    <ImageView
+                        android:layout_width="@dimen/material_icons"
+                        android:layout_height="@dimen/material_icons"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:id="@+id/icon_doctor_type_doctorProfile"
+                        android:background="@drawable/ic_content_paste_white_24dp"
+                        android:contentDescription="@string/description_icon_email" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="@string/hint_doctor_type"
+                        android:id="@+id/input_doctor_type_doctorProfile"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorText"
+                        android:backgroundTint="@color/colorText"
+                        android:textColorHint="@color/colorText"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/layout_doctor_type_doctorProfile"
                     android:id="@+id/layout_crm_doctorProfile">
 
                     <ImageView
@@ -175,6 +205,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_below="@id/layout_address_doctorProfile"
+                    android:layout_marginBottom="@dimen/default_margin"
                     android:id="@+id/layout_phone_doctorProfile"
                     android:orientation="horizontal">
 
@@ -214,7 +245,6 @@
         android:id="@+id/fab_edit_doctor_doctorProfile"
         android:clickable="true"
         android:src="@drawable/ic_border_color_white_24dp"
-        app:fabSize="mini"
         app:layout_anchor="@id/layout_userInfo_doctorProfile"
         app:layout_anchorGravity="bottom|right|top"/>
 

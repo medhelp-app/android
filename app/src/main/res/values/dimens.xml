@@ -12,4 +12,5 @@
     <dimen name="image_profile_height">96dp</dimen>
 
     <dimen name="text_size">16sp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
