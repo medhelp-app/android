@@ -224,11 +224,16 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
         }
 
         if (summary != null) {
-            mRatingGeneral.setRating(Float.parseFloat(summary.getGeneralRating()));
-            mOpitionsCount.setText("Baseado em " + summary.getNumberOfEvaluations());
-            mRatingPunctuality.setRating(Float.parseFloat(summary.getPunctualityRating()));
-            mRatingAttention.setRating(Float.parseFloat(summary.getAttentionRating()));
-            mRatingLocation.setRating(Float.parseFloat(summary.getInstallationRating()));
+            if (summary.getGeneralRating() != null)
+                mRatingGeneral.setRating(Float.parseFloat(summary.getGeneralRating()));
+            if (summary.getNumberOfEvaluations() != null)
+                mOpitionsCount.setText("Baseado em " + summary.getNumberOfEvaluations());
+            if (summary.getPunctualityRating() != null)
+                mRatingPunctuality.setRating(Float.parseFloat(summary.getPunctualityRating()));
+            if (summary.getAttentionRating() != null)
+                mRatingAttention.setRating(Float.parseFloat(summary.getAttentionRating()));
+            if (summary.getInstallationRating() != null)
+                mRatingLocation.setRating(Float.parseFloat(summary.getInstallationRating()));
         }
     }
 
@@ -263,7 +268,7 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
 
     private void saveEvaluation(final String punctualityRating, final String attentionRating,
                                 final String installationRating, final String description) {
-        String url = URLHelper.GET_DOCTOR_OPINIONS.replace(":id", mDoctorId);
+        String url = URLHelper.SAVE_DOCTOR_OPINIONS.replace(":id", mDoctorId);
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
