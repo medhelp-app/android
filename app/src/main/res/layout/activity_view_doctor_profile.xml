@@ -112,7 +112,7 @@
                 android:layout_margin="@dimen/default_margin"
                 android:layout_gravity="center"
                 android:id="@+id/icon_ratingAttention_viewDoctor"
-                android:background="@drawable/ic_alarm_white_24dp"
+                android:background="@drawable/ic_person_white_24dp"
                 android:contentDescription="@string/description_icon_email"
                 android:layout_below="@+id/icon_ratingPunctuality_viewDoctor"
                 android:layout_alignParentLeft="true"
@@ -144,7 +144,7 @@
                 android:layout_margin="@dimen/default_margin"
                 android:layout_gravity="center"
                 android:id="@+id/icon_ratingLocation_viewDoctor"
-                android:background="@drawable/ic_alarm_white_24dp"
+                android:background="@drawable/ic_location_city_white_24dp"
                 android:contentDescription="@string/description_icon_email"
                 android:layout_below="@+id/icon_ratingAttention_viewDoctor"
                 android:layout_alignParentLeft="true"
@@ -170,6 +170,13 @@
                 android:layout_below="@+id/icon_ratingAttention_viewDoctor"
                 android:layout_alignLeft="@+id/ratingAttention_viewDoctor"
                 android:layout_alignStart="@+id/ratingAttention_viewDoctor" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/ratingLocation_viewDoctor"
+                android:id="@+id/btn_evaluate_viewDoctor"
+                android:text="@string/evaluate"/>
 
         </RelativeLayout>
 

@@ -4,4 +4,10 @@
     android:layout_height="match_parent"
     tools:context="com.medhelp.medhelp.fragments.doctor.DoctorPatientsFragment">
 
+    <ListView
+        android:id="@+id/list_patients_doctorPatients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null" />
+
 </FrameLayout>

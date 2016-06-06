@@ -155,7 +155,7 @@ public class PatientHumanBodyActivity extends Activity {
             problemsText.add(problem.getProblem());
         }
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(PatientHumanBodyActivity.this, R.style.AppCompatAlertDialogStyle);
         LayoutInflater inflater = getLayoutInflater();
 
         View convertView = inflater.inflate(R.layout.body_part_problems_list, null);

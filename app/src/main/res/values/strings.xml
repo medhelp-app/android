@@ -52,6 +52,8 @@
     <string name="description_human_body">Corpo humano</string>
 
     <string name="evaluate">Opinar</string>
+    <string name="general">Geral</string>
+    <string name="comment">Comentário</string>
 
     <string-array name="user_type">
         <item>Paciente</item>
@@ -87,5 +89,6 @@
     <string name="title_activity_edit_doctor_profile">Editar Perfil</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_patient_human_body">Corpo Humano</string>
+    <string name="title_activity_prescribe">PrescribeActivity</string>
 
 </resources>

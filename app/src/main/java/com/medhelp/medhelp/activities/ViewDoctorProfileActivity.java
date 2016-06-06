@@ -1,10 +1,17 @@
 package com.medhelp.medhelp.activities;
 
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatRatingBar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -26,6 +33,7 @@ import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.ImageHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Doctor;
+import com.medhelp.medhelp.model.OpinionSummary;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,13 +52,21 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
     private TextView mPhoneText;
 
     private AppCompatRatingBar mRatingGeneral;
+    private TextView mOpitionsCount;
     private AppCompatRatingBar mRatingPunctuality;
     private AppCompatRatingBar mRatingAttention;
     private AppCompatRatingBar mRatingLocation;
 
+    private AppCompatButton mEvaluateButton;
+
     private GoogleMap mMap;
     private double mLongitude;
     private double mLatitude;
+
+    private AppCompatRatingBar mLocationRating;
+    private AppCompatRatingBar mAttentionRating;
+    private AppCompatRatingBar mPunctualityRating;
+    private EditText mEvaluationDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +78,14 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
         initFields();
 
         loadUserFromService();
+        loadRatingsFromService();
+
+        mEvaluateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createEvaluationDialog();
+            }
+        });
     }
 
     private void initFields() {
@@ -71,9 +95,12 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
         mPhoneText = (TextView) findViewById(R.id.phone_viewDoctor);
 
         mRatingGeneral = (AppCompatRatingBar) findViewById(R.id.ratingGeneral_viewDoctor);
+        mOpitionsCount = (TextView) findViewById(R.id.opinions_count_viewDoctor);
         mRatingPunctuality = (AppCompatRatingBar) findViewById(R.id.ratingPunctuality_viewDoctor);
         mRatingAttention = (AppCompatRatingBar) findViewById(R.id.ratingAttention_viewDoctor);
         mRatingLocation = (AppCompatRatingBar) findViewById(R.id.ratingLocation_viewDoctor);
+
+        mEvaluateButton = (AppCompatButton) findViewById(R.id.btn_evaluate_viewDoctor);
     }
 
     private void populateFields(Doctor doctor) {
@@ -159,4 +186,117 @@ public class ViewDoctorProfileActivity extends FragmentActivity {
             e.printStackTrace();
         }
     }
+
+    private void loadRatingsFromService() {
+        String patientUrl = URLHelper.GET_DOCTOR_OPINIONS_SUMMARY.replace(":id", mDoctorId);
+        StringRequest request = new StringRequest(Request.Method.GET, patientUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                parseRatingsResponseJSON(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private void parseRatingsResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        OpinionSummary summary = null;
+        try {
+            summary = objectMapper.readValue(response, OpinionSummary.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (summary != null) {
+            mRatingGeneral.setRating(Float.parseFloat(summary.getGeneralRating()));
+            mOpitionsCount.setText("Baseado em " + summary.getNumberOfEvaluations());
+            mRatingPunctuality.setRating(Float.parseFloat(summary.getPunctualityRating()));
+            mRatingAttention.setRating(Float.parseFloat(summary.getAttentionRating()));
+            mRatingLocation.setRating(Float.parseFloat(summary.getInstallationRating()));
+        }
+    }
+
+    private void createEvaluationDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewDoctorProfileActivity.this, R.style.AppCompatAlertDialogStyle);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.dialog_evaluate_doctor, null);
+        alertDialog.setTitle(R.string.evaluate);
+        alertDialog.setView(dialogView);
+        mPunctualityRating = (AppCompatRatingBar) dialogView.findViewById(R.id.ratingPunctuality_evaluate);
+        mAttentionRating = (AppCompatRatingBar) dialogView.findViewById(R.id.ratingAttention_evaluate);
+        mLocationRating = (AppCompatRatingBar) dialogView.findViewById(R.id.ratingLocation_evaluate);
+        mEvaluationDescription = (EditText) dialogView.findViewById(R.id.input_description_evaluate);
+
+        alertDialog.setPositiveButton(R.string.evaluate, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String punctualityRating = String.valueOf(mPunctualityRating.getRating());
+                String attentionRating = String.valueOf(mAttentionRating.getRating());
+                String installationRating = String.valueOf(mLocationRating.getRating());
+                String description = mEvaluationDescription.getText().toString();
+
+                saveEvaluation(punctualityRating, attentionRating, installationRating, description);
+            }
+        });
+
+        alertDialog.setNegativeButton(R.string.cancel, null);
+
+        alertDialog.show();
+    }
+
+    private void saveEvaluation(final String punctualityRating, final String attentionRating,
+                                final String installationRating, final String description) {
+        String url = URLHelper.GET_DOCTOR_OPINIONS.replace(":id", mDoctorId);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Opinião adicionada", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("punctualityRating", punctualityRating);
+                params.put("attentionRating", attentionRating);
+                params.put("installationRating", installationRating);
+                params.put("comment", description);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
 }

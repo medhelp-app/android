@@ -80,8 +80,8 @@ public class EditDoctorProfileActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDoctor(mNameText.getText().toString(), mDoctorTypeText.getText().toString(),
-                        mEmailText.getText().toString(), mCrmText.getText().toString(),
+                saveDoctor(mNameText.getText().toString(), mEmailText.getText().toString(),
+                        mDoctorTypeText.getText().toString(), mCrmText.getText().toString(),
                         mStreetName.getText().toString(), mZipCode.getText().toString(),
                         mCity.getText().toString(), mState.getText().toString(),
                         mCountry.getText().toString(), mPhone.getText().toString(),
@@ -198,6 +198,8 @@ public class EditDoctorProfileActivity extends Activity {
                     intent.putExtra("user", mUser);
                     startActivity(intent);
                     finish();
+                } else {
+                    Toast.makeText(getBaseContext(), "Falha ao salvar perfil", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -249,6 +251,10 @@ public class EditDoctorProfileActivity extends Activity {
             message = mapper.readValue(response, new TypeReference<Map<String,String>>() { });
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (message != null && message.get("error") != null) {
+            Toast.makeText(getBaseContext(), message.get("error"), Toast.LENGTH_LONG).show();
         }
 
         return message != null && !TextUtils.isEmpty(message.get("sucess")) && message.get("sucess").equals("ok");

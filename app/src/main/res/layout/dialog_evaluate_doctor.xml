@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_margin"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/opinions_count_evaluate"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="@dimen/material_icons"
+            android:layout_height="@dimen/material_icons"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_gravity="center"
+            android:id="@+id/icon_ratingPunctuality_evaluate"
+            android:background="@drawable/ic_alarm_white_24dp"
+            android:contentDescription="@string/description_icon_email"
+            android:layout_below="@+id/opinions_count_evaluate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/text_ratingPunctuality_evaluate"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_punctuality"
+            android:textColor="@color/colorText"
+            android:layout_below="@+id/opinions_count_evaluate"
+            android:layout_toRightOf="@+id/icon_ratingPunctuality_evaluate"
+            android:layout_toEndOf="@+id/icon_ratingPunctuality_evaluate" />
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingPunctuality_evaluate"
+            android:layout_below="@+id/text_ratingPunctuality_evaluate" />
+
+        <ImageView
+            android:layout_width="@dimen/material_icons"
+            android:layout_height="@dimen/material_icons"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_gravity="center"
+            android:id="@+id/icon_ratingAttention_evaluate"
+            android:background="@drawable/ic_person_white_24dp"
+            android:contentDescription="@string/description_icon_email"
+            android:layout_below="@+id/ratingPunctuality_evaluate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/text_ratingAttention_evaluate"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_attention"
+            android:textColor="@color/colorText"
+            android:layout_alignTop="@+id/icon_ratingAttention_evaluate"
+            android:layout_toRightOf="@+id/icon_ratingAttention_evaluate"
+            android:layout_toEndOf="@+id/icon_ratingAttention_evaluate" />
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingAttention_evaluate"
+            android:layout_below="@+id/text_ratingAttention_evaluate" />
+
+        <ImageView
+            android:layout_width="@dimen/material_icons"
+            android:layout_height="@dimen/material_icons"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_gravity="center"
+            android:id="@+id/icon_ratingLocation_evaluate"
+            android:background="@drawable/ic_location_city_white_24dp"
+            android:contentDescription="@string/description_icon_email"
+            android:layout_below="@+id/ratingAttention_evaluate"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/text_ratingLocation_evaluate"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_location"
+            android:textColor="@color/colorText"
+            android:layout_alignBottom="@+id/icon_ratingLocation_evaluate"
+            android:layout_toRightOf="@+id/icon_ratingLocation_evaluate"
+            android:layout_toEndOf="@+id/icon_ratingLocation_evaluate" />
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingLocation_evaluate"
+            android:layout_below="@+id/text_ratingLocation_evaluate" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingLocation_evaluate"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/layout_comment">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/input_description_evaluate"
+                android:hint="@string/comment"
+                android:textColor="@color/colorText"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </android.support.design.widget.TextInputLayout>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
