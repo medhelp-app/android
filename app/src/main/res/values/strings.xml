@@ -70,7 +70,7 @@
     <string-array name="titles_doctorTab">
         <item>Perfil</item>
         <item>Pacientes</item>
-        <item>Prescrição</item>
+        <item>Consulta</item>
         <item>Social</item>
     </string-array>
 
