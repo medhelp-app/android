@@ -32,6 +32,7 @@
     <string name="save">Salvar</string>
     <string name="add">Adicionar</string>
     <string name="cancel">Cancelar</string>
+    <string name="go_back">Voltar</string>
 
     <string name="body_part">Parte do corpo</string>
     <string name="problem">Problema</string>
@@ -52,6 +53,8 @@
     <string name="description_human_body">Corpo humano</string>
 
     <string name="evaluate">Opinar</string>
+    <string name="evaluations">Opiniões</string>
+    <string name="evaluate_list">Ver opiniões</string>
     <string name="general">Geral</string>
     <string name="comment">Comentário</string>
 
