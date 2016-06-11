@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_icons"
+        android:id="@+id/text_weekday_availabilitiesList"
+        android:isIndicator="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_hours_availabilitiesList"
+        android:layout_below="@+id/text_weekday_availabilitiesList" />
+
+</RelativeLayout>
