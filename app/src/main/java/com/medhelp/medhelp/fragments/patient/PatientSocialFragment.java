@@ -7,13 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.FeedItem;
 import com.medhelp.medhelp.views.adapters.FeedListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class PatientSocialFragment extends Fragment {
@@ -43,17 +58,45 @@ public class PatientSocialFragment extends Fragment {
 
         feedItems = new ArrayList<>();
 
-        FeedItem feedItem = new FeedItem("1", "Carlos Rodrigo", "1", "2016-21-12", "Quais as horas que são mais indicadas para tomar banho de sol sem prejudicar a pele?", "question");
-        FeedItem feedItem1 = new FeedItem("2", "Luiz Pereira", "2", "2016-21-12", "", "question");
-        FeedItem feedItem2 = new FeedItem("3", "Pedro Silva", "3", "2016-21-12", "Medico fazendo uma postagem", "post");
-        feedItems.add(feedItem);
-        feedItems.add(feedItem1);
-        feedItems.add(feedItem2);
+        StringRequest request = new StringRequest(Request.Method.GET, URLHelper.GET_PUBLICATIONS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                feedItems = parseResponseJSON(response);
+                listAdapter = new FeedListAdapter(getActivity(), feedItems);
+                listView.setAdapter(listAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
 
-        listAdapter = new FeedListAdapter(getActivity(), feedItems);
-        listView.setAdapter(listAdapter);
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
 
         return view;
+    }
+
+    private List<FeedItem> parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        FeedItem[] feedItems = new FeedItem[]{};
+        try {
+            feedItems = objectMapper.readValue(response, FeedItem[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Arrays.asList(feedItems);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
