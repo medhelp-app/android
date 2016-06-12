@@ -57,11 +57,18 @@
             android:layout_below="@id/phone_viewDoctor"
             android:id="@+id/layout_rating_viewDoctor">
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/btn_schedule_appointment_viewDoctor"
+                android:text="@string/schedule_appointment"/>
+
             <android.support.v7.widget.AppCompatRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ratingGeneral_viewDoctor"
                 android:isIndicator="true"
+                android:layout_below="@+id/btn_schedule_appointment_viewDoctor"
                 android:layout_centerHorizontal="true"/>
 
             <TextView

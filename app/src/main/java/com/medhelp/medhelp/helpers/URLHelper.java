@@ -39,4 +39,6 @@ public class URLHelper {
     public static final String GET_DOCTOR_AVAILABILITY = "https://medhelp-app.herokuapp.com/api/doctors/:id/availability";
 
     public static final String ADD_DOCTOR_AVAILABILITY = "https://medhelp-app.herokuapp.com/api/doctors/:id/availability";
+
+    public static final String ADD_DOCTOR_APPOINTMENT = "https://medhelp-app.herokuapp.com/api/doctors/:id/appointments";
 }

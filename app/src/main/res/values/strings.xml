@@ -52,6 +52,7 @@
 
     <string name="description_human_body">Corpo humano</string>
 
+    <string name="schedule_appointment">Marcar consulta</string>
     <string name="evaluate">Opinar</string>
     <string name="evaluations">Opiniões</string>
     <string name="evaluate_list">Ver opiniões</string>

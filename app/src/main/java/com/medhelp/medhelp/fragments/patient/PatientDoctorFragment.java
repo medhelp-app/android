@@ -35,6 +35,7 @@ import com.medhelp.medhelp.activities.patient.MainActivity;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Doctor;
+import com.medhelp.medhelp.model.User;
 import com.medhelp.medhelp.views.adapters.DoctorListAdapter;
 
 import java.io.IOException;
@@ -45,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientDoctorFragment extends Fragment {
+
+    private User mUser;
 
     private GoogleMap mMap;
     private ListView mListView;
@@ -63,6 +66,8 @@ public class PatientDoctorFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_patient_doctor, container, false);
 
+        mUser = (User) getActivity().getIntent().getSerializableExtra("user");
+
         setHasOptionsMenu(true);
 
         mListView = (ListView) view.findViewById(R.id.list_doctors_patientDoctor);
@@ -73,6 +78,7 @@ public class PatientDoctorFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), ViewDoctorProfileActivity.class);
                 intent.putExtra("doctorId", mDoctors.get(i).get_id());
+                intent.putExtra("patientId", mUser.get_id());
                 startActivity(intent);
             }
         });

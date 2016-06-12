@@ -47,4 +47,9 @@ public class Availability {
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
     }
+
+    @Override
+    public String toString() {
+        return startHour + " - " + endHour;
+    }
 }

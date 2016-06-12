@@ -53,8 +53,12 @@ public class OpinionsListAdapter extends BaseAdapter {
 
         Opinion opinion = opinions.get(i);
 
-        rating.setRating(Float.parseFloat(opinion.getGeneralRating()));
-        comment.setText(opinion.getComment());
+        if (opinion.getGeneralRating() != null) {
+            rating.setRating(Float.parseFloat(opinion.getGeneralRating()));
+        }
+        if (opinion.getComment() != null) {
+            comment.setText(opinion.getComment());
+        }
 
         return view;
     }
