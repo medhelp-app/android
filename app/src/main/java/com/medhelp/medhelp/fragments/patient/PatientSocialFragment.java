@@ -6,66 +6,54 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.model.FeedItem;
+import com.medhelp.medhelp.views.adapters.FeedListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PatientSocialFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PatientSocialFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PatientSocialFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ListView listView;
+    private FeedListAdapter listAdapter;
+    private List<FeedItem> feedItems;
 
     public PatientSocialFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PatientSocialFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PatientSocialFragment newInstance(String param1, String param2) {
-        PatientSocialFragment fragment = new PatientSocialFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_patient_social, container, false);
+        View view = inflater.inflate(R.layout.fragment_patient_social, container, false);
+
+        listView = (ListView) view.findViewById(R.id.list);
+
+        feedItems = new ArrayList<>();
+
+        FeedItem feedItem = new FeedItem("1", "Carlos Rodrigo", "1", "2016-21-12", "Quais as horas que são mais indicadas para tomar banho de sol sem prejudicar a pele?", "question");
+        FeedItem feedItem1 = new FeedItem("2", "Luiz Pereira", "2", "2016-21-12", "", "question");
+        FeedItem feedItem2 = new FeedItem("3", "Pedro Silva", "3", "2016-21-12", "Medico fazendo uma postagem", "post");
+        feedItems.add(feedItem);
+        feedItems.add(feedItem1);
+        feedItems.add(feedItem2);
+
+        listAdapter = new FeedListAdapter(getActivity(), feedItems);
+        listView.setAdapter(listAdapter);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
