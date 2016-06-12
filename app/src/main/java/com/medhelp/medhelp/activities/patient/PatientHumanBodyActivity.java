@@ -111,39 +111,46 @@ public class PatientHumanBodyActivity extends Activity {
 
     private void getBodyPartTouch(float x, float y) {
         //Head
-        if (x > 230 && y > 30 && x < 430 && y < 180) {
+        if (x > 230 && y > 30 && x < 430 && y < 180
+                && mBodyParts.get(EBodyType.Head.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.Head.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //Chest
-        else if (x > 200 && y > 180 && x < 450 && y < 350) {
+        else if (x > 200 && y > 180 && x < 450 && y < 350
+                &&mBodyParts.get(EBodyType.Chest.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.Chest.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //Abs
-        else if (x > 200 && y > 180 && x < 450 && y < 520) {
+        else if (x > 200 && y > 180 && x < 450 && y < 520
+                &&mBodyParts.get(EBodyType.Abs.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.Abs.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         // RightArm
-        else if (x > 30 && y > 180 && x < 150 && y < 620) {
+        else if (x > 30 && y > 180 && x < 150 && y < 620
+                &&mBodyParts.get(EBodyType.RightArm.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.RightArm.getValue()).getProblems();
             createProblemsListDialog(problems);
         }//LeftArm
-        else if (x > 460 && y > 180 && x < 630 && y < 620) {
+        else if (x > 460 && y > 180 && x < 630 && y < 620
+                &&mBodyParts.get(EBodyType.LeftArm.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.LeftArm.getValue()).getProblems();
             createProblemsListDialog(problems);
         }
 
         //RightLeg
-        else if (x > 200 && y > 520 && x < 300 && y < 1000) {
+        else if (x > 200 && y > 520 && x < 300 && y < 1000
+                &&mBodyParts.get(EBodyType.RightLeg.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.RightLeg.getValue()).getProblems();
             createProblemsListDialog(problems);
         }//LeftLeg
-        else if (x > 300 && y > 520 && x < 460 && y < 1000) {
+        else if (x > 300 && y > 520 && x < 460 && y < 1000
+                &&mBodyParts.get(EBodyType.LeftLeg.getValue()) != null) {
             List<Problem> problems = mBodyParts.get(EBodyType.LeftLeg.getValue()).getProblems();
             createProblemsListDialog(problems);
         }

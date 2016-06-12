@@ -6,65 +6,163 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
+import com.medhelp.medhelp.model.FeedItem;
+import com.medhelp.medhelp.model.User;
+import com.medhelp.medhelp.views.adapters.FeedListAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DoctorSocialFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DoctorSocialFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 public class DoctorSocialFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+
+    private User mUser;
+
+    private ListView listView;
+    private FeedListAdapter listAdapter;
+    private List<FeedItem> feedItems;
+
+    private EditText mNewPublicationText;
+    private Button mNewPublicationButton;
 
     public DoctorSocialFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DoctorSocialFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DoctorSocialFragment newInstance(String param1, String param2) {
-        DoctorSocialFragment fragment = new DoctorSocialFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_doctor_social, container, false);
+        View view = inflater.inflate(R.layout.fragment_patient_social, container, false);
+
+        mUser = (User) getActivity().getIntent().getSerializableExtra("user");
+
+        mNewPublicationText = (EditText) view.findViewById(R.id.text_new_publication);
+        mNewPublicationButton = (Button) view.findViewById(R.id.btn_new_publication);
+        mNewPublicationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewPublication(mUser.get_id(), "post", mNewPublicationText.getText().toString());
+            }
+        });
+
+        listView = (ListView) view.findViewById(R.id.list);
+
+        feedItems = new ArrayList<>();
+
+        loadPostsFromService();
+
+        return view;
+    }
+
+    private void loadPostsFromService() {
+        StringRequest request = new StringRequest(Request.Method.GET, URLHelper.GET_PUBLICATIONS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                feedItems = parseResponseJSON(response);
+                listAdapter = new FeedListAdapter(getActivity(), feedItems);
+                listView.setAdapter(listAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private List<FeedItem> parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        FeedItem[] feedItems = new FeedItem[]{};
+        try {
+            feedItems = objectMapper.readValue(response, FeedItem[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Arrays.asList(feedItems);
+    }
+
+
+    private void addNewPublication(final String idUser, final String publicationType, final String publicationText) {
+        StringRequest request = new StringRequest(Request.Method.POST, URLHelper.ADD_PUBLICATION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                mNewPublicationText.setText("");
+                loadPostsFromService();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(calendar.getTimeInMillis());
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                String date = format1.format(calendar.getTime());
+
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", idUser);
+                params.put("type", publicationType);
+                params.put("text", publicationText);
+                params.put("date", date);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

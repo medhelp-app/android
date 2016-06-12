@@ -1,7 +1,41 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.medhelp.medhelp.fragments.doctor.DoctorSocialFragment">
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="@dimen/feed_item_margin"
+        android:layout_marginRight="@dimen/feed_item_margin"
+        android:layout_marginTop="@dimen/feed_item_margin"
+        android:background="@drawable/bg_parent_rounded_corner"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/text_new_publication"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="@string/new_post" />
+
+        <Button
+            android:id="@+id/btn_new_publication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post"
+        android:divider="@null"
+        android:paddingBottom="@dimen/tab_bottom_margin"/>
+
+
+</RelativeLayout>

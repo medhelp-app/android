@@ -80,6 +80,12 @@ public class PatientSocialFragment extends Fragment {
 
         feedItems = new ArrayList<>();
 
+        loadPostsFromService();
+
+        return view;
+    }
+
+    private void loadPostsFromService() {
         StringRequest request = new StringRequest(Request.Method.GET, URLHelper.GET_PUBLICATIONS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -103,8 +109,6 @@ public class PatientSocialFragment extends Fragment {
         };
 
         AppController.getInstance().addToRequestQueue(request);
-
-        return view;
     }
 
     private List<FeedItem> parseResponseJSON(String response) {
@@ -127,6 +131,7 @@ public class PatientSocialFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 mNewPublicationText.setText("");
+                loadPostsFromService();
             }
         }, new Response.ErrorListener() {
             @Override
