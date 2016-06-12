@@ -3,6 +3,7 @@ package com.medhelp.medhelp.views.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.model.FeedItem;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class FeedListAdapter extends BaseAdapter{
@@ -63,7 +65,8 @@ public class FeedListAdapter extends BaseAdapter{
 
         name.setText(item.getName());
 
-        timestamp.setText(item.getDate());
+        CharSequence timeAgo = parseDate(item.getDate());
+        timestamp.setText(timeAgo);
 
         if (!TextUtils.isEmpty(item.getText())) {
             statusMsg.setText(item.getText());
@@ -73,5 +76,21 @@ public class FeedListAdapter extends BaseAdapter{
         }
 
         return view;
+    }
+
+    private CharSequence parseDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        String[] dates = date.split("T");
+
+        String[] day = dates[0].split("-");
+        String[] hour = dates[1].split(":");
+        calendar.set(Integer.parseInt(day[0]), Integer.parseInt(day[1]) - 1, Integer.parseInt(day[2]));
+
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(hour[1]));
+
+        return DateUtils.getRelativeTimeSpanString(
+                Long.parseLong(String.valueOf(calendar.getTimeInMillis())),
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
     }
 }
