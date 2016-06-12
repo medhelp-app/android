@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,13 +23,17 @@ import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.FeedItem;
+import com.medhelp.medhelp.model.User;
 import com.medhelp.medhelp.views.adapters.FeedListAdapter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -35,9 +41,14 @@ public class PatientSocialFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private User mUser;
+
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
+
+    private EditText mNewPublicationText;
+    private Button mNewPublicationButton;
 
     public PatientSocialFragment() {
         // Required empty public constructor
@@ -53,6 +64,17 @@ public class PatientSocialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_patient_social, container, false);
+
+        mUser = (User) getActivity().getIntent().getSerializableExtra("user");
+
+        mNewPublicationText = (EditText) view.findViewById(R.id.text_new_publication);
+        mNewPublicationButton = (Button) view.findViewById(R.id.btn_new_publication);
+        mNewPublicationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewPublication(mUser.get_id(), "question", mNewPublicationText.getText().toString());
+            }
+        });
 
         listView = (ListView) view.findViewById(R.id.list);
 
@@ -97,6 +119,47 @@ public class PatientSocialFragment extends Fragment {
         }
 
         return Arrays.asList(feedItems);
+    }
+
+
+    private void addNewPublication(final String idUser, final String publicationType, final String publicationText) {
+        StringRequest request = new StringRequest(Request.Method.POST, URLHelper.ADD_PUBLICATION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                mNewPublicationText.setText("");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(calendar.getTimeInMillis());
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                String date = format1.format(calendar.getTime());
+
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", idUser);
+                params.put("type", publicationType);
+                params.put("text", publicationText);
+                params.put("date", date);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
