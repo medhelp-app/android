@@ -12,10 +12,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -33,14 +35,16 @@ import com.medhelp.medhelp.model.BodyPart;
 import com.medhelp.medhelp.model.EBodyType;
 import com.medhelp.medhelp.model.ESeverityProblem;
 import com.medhelp.medhelp.model.Problem;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PatientHumanBodyActivity extends Activity {
+public class PatientHumanBodyActivity extends Activity implements DatePickerDialog.OnDateSetListener {
 
     private String mPatientId;
     private HashMap<String, BodyPart> mBodyParts = new HashMap<>();
@@ -60,6 +64,7 @@ public class PatientHumanBodyActivity extends Activity {
     private RadioButton mDialogLowButton;
     private RadioButton mDialogMediumButton;
     private RadioButton mDialogHighButton;
+    private TextView mDialogProblemDate;
     private Spinner mDialogBodyParts;
 
     @Override
@@ -222,46 +227,48 @@ public class PatientHumanBodyActivity extends Activity {
     private void setBodyImages() {
         if (mBodyParts.get(EBodyType.Head.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.Head.getValue()), mHeadImage,
-                    R.drawable.body_head_red, R.drawable.body_head_yellow);
+                    R.drawable.body_head_red, R.drawable.body_head_orange, R.drawable.body_head_yellow);
         }
 
         if (mBodyParts.get(EBodyType.Chest.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.Chest.getValue()), mChestImage,
-                    R.drawable.body_chest_red, R.drawable.body_chest_yellow);
+                    R.drawable.body_chest_red, R.drawable.body_chest_orange, R.drawable.body_chest_yellow);
         }
 
         if (mBodyParts.get(EBodyType.Abs.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.Abs.getValue()), mAbsImage,
-                    R.drawable.body_abs_red, R.drawable.body_abs_yellow);
+                    R.drawable.body_abs_red, R.drawable.body_abs_orange, R.drawable.body_abs_yellow);
         }
 
         if (mBodyParts.get(EBodyType.RightArm.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.RightArm.getValue()), mRightArmImage,
-                    R.drawable.body_right_arm_red, R.drawable.body_right_arm_yellow);
+                    R.drawable.body_right_arm_red, R.drawable.body_right_arm_orange, R.drawable.body_right_arm_yellow);
         }
 
         if (mBodyParts.get(EBodyType.LeftArm.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.LeftArm.getValue()), mLeftArmImage,
-                    R.drawable.body_left_arm_red, R.drawable.body_left_arm_yellow);
+                    R.drawable.body_left_arm_red, R.drawable.body_left_arm_orange, R.drawable.body_left_arm_yellow);
         }
 
         if (mBodyParts.get(EBodyType.RightLeg.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.RightLeg.getValue()), mRightLegImage,
-                    R.drawable.body_right_leg_red, R.drawable.body_right_leg_yellow);
+                    R.drawable.body_right_leg_red, R.drawable.body_right_leg_orange, R.drawable.body_right_leg_yellow);
         }
 
         if (mBodyParts.get(EBodyType.LeftLeg.getValue()).getProblems().size() > 0) {
             colorBodyPart(mBodyParts.get(EBodyType.LeftLeg.getValue()), mLeftLegImage,
-                    R.drawable.body_left_leg_red, R.drawable.body_left_leg_yellow);
+                    R.drawable.body_left_leg_red, R.drawable.body_left_leg_orange, R.drawable.body_left_leg_yellow);
         }
     }
 
     private void colorBodyPart(BodyPart bodyPart, ImageButton bodyPartImage,
-                               int redDrawable, int yellowDrawable) {
+                               int redDrawable, int orangeDrawable, int yellowDrawable) {
         ESeverityProblem severityProblem = getBodyColorFromSeverity(bodyPart.getProblems());
         if (severityProblem == ESeverityProblem.High) {
             bodyPartImage.setImageResource(redDrawable);
         } else if (severityProblem == ESeverityProblem.Medium) {
+            bodyPartImage.setImageResource(orangeDrawable);
+        } else if (severityProblem == ESeverityProblem.Low) {
             bodyPartImage.setImageResource(yellowDrawable);
         }
     }
@@ -295,6 +302,15 @@ public class PatientHumanBodyActivity extends Activity {
         mDialogLowButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_low);
         mDialogMediumButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_medium);
         mDialogHighButton = (RadioButton) dialogView.findViewById(R.id.radio_severity_high);
+        mDialogProblemDate = (TextView) dialogView.findViewById(R.id.text_date_problem);
+
+        ImageView btnDatePicker = (ImageView) dialogView.findViewById(R.id.btn_show_date_picker_problem);
+        btnDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createCalendar();
+            }
+        });
 
         alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
@@ -303,8 +319,9 @@ public class PatientHumanBodyActivity extends Activity {
                 String part = mDialogBodyParts.getSelectedItem().toString();
                 String problem = mDialogProblemText.getText().toString();
                 String description = mDialogDescriptionText.getText().toString();
+                String date = mDialogProblemDate.getText().toString();
 
-                callService(BodyPartHelper.mBodyPartsMap.get(part).getValue(), problem, description, severityProblem);
+                addProblemToService(BodyPartHelper.mBodyPartsMap.get(part).getValue(), problem, description, severityProblem, date);
             }
         });
 
@@ -312,6 +329,20 @@ public class PatientHumanBodyActivity extends Activity {
 
         alertDialog.create();
         alertDialog.show();
+    }
+
+    private void createCalendar() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                PatientHumanBodyActivity.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePickerDialog.vibrate(false);
+
+        datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
     }
 
     private String getSelectedSeverity(RadioGroup severityRadio, RadioButton lowButton, RadioButton mediumButton, RadioButton highButton) {
@@ -325,7 +356,7 @@ public class PatientHumanBodyActivity extends Activity {
         return ESeverityProblem.Low.getValue();
     }
 
-    private void callService(final String part, final String problem, final String description, final String severity) {
+    private void addProblemToService(final String part, final String problem, final String description, final String severity, final String date) {
         String url = URLHelper.ADD_PATIENT_BODY_PART_PROBLEM_URL.replace(":id", mPatientId);
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -356,6 +387,7 @@ public class PatientHumanBodyActivity extends Activity {
                 params.put("problem", problem);
                 params.put("description", description);
                 params.put("severity", severity);
+                params.put("occurredDate", date);
 
                 return params;
             }
@@ -364,4 +396,9 @@ public class PatientHumanBodyActivity extends Activity {
         AppController.getInstance().addToRequestQueue(request);
     }
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        mDialogProblemDate.setText(date);
+    }
 }

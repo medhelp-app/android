@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/default_margin"
         android:id="@+id/group_severity_problem"
         android:orientation="horizontal">
 
@@ -82,4 +83,26 @@
             android:text="@string/high"
             android:id="@+id/radio_severity_high" />
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_event_white_24dp"
+            android:id="@+id/btn_show_date_picker_problem"
+            android:contentDescription="@string/description_icon_profile"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/text_date_problem"
+            android:layout_margin="@dimen/separator_margin"/>
+
+    </LinearLayout>
+
 </LinearLayout>
