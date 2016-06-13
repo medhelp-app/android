@@ -8,14 +8,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
+import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.helpers.ApiKeyHelper;
+import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.FeedItem;
+import com.medhelp.medhelp.model.User;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class FeedListAdapter extends BaseAdapter{
 
@@ -23,9 +37,12 @@ public class FeedListAdapter extends BaseAdapter{
     private LayoutInflater inflater;
     private List<FeedItem> feedItems;
 
-    public FeedListAdapter(Activity activity, List<FeedItem> feedItems) {
+    private User user;
+
+    public FeedListAdapter(Activity activity, List<FeedItem> feedItems, User user) {
         this.activity = activity;
         this.feedItems = feedItems;
+        this.user = user;
     }
 
     @Override
@@ -51,29 +68,46 @@ public class FeedListAdapter extends BaseAdapter{
         if (view == null)
             view = inflater.inflate(R.layout.feed_item, null);
 
+        NetworkImageView profilePic = (NetworkImageView) view.findViewById(R.id.image_profilePic_feedItem);
         TextView name = (TextView) view.findViewById(R.id.text_userName_feedItem);
+        TextView timestamp = (TextView) view.findViewById(R.id.date_timestamp_feedItem);
 
-        TextView timestamp = (TextView) view
-                .findViewById(R.id.date_timestamp_feedItem);
-        TextView statusMsg = (TextView) view
-                .findViewById(R.id.text_publication_feedItem);
-        NetworkImageView profilePic = (NetworkImageView) view
-                .findViewById(R.id.image_profilePic_feedItem);
+        TextView text = (TextView) view.findViewById(R.id.text_publication_feedItem);
+        final TextView agreeCount = (TextView) view.findViewById(R.id.text_agree_count_feedItem);
+        final TextView disagreeCount = (TextView) view.findViewById(R.id.text_disagree_count_feedItem);
 
-
-        FeedItem item = feedItems.get(i);
+        final FeedItem item = feedItems.get(i);
 
         name.setText(item.getName());
 
         CharSequence timeAgo = parseDate(item.getDate());
         timestamp.setText(timeAgo);
 
+        agreeCount.setText(item.getAgree());
+        disagreeCount.setText(item.getDisagree());
+
         if (!TextUtils.isEmpty(item.getText())) {
-            statusMsg.setText(item.getText());
-            statusMsg.setVisibility(View.VISIBLE);
+            text.setText(item.getText());
+            text.setVisibility(View.VISIBLE);
         } else {
-            statusMsg.setVisibility(View.GONE);
+            text.setVisibility(View.GONE);
         }
+
+        ImageButton agree = (ImageButton) view.findViewById(R.id.btn_agree_count_feedItem);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                votePublication(user.get_id(), item.get_id(), "agree");
+            }
+        });
+
+        ImageButton disagree = (ImageButton) view.findViewById(R.id.btn_disagree_count_feedItem);
+        disagree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                votePublication(user.get_id(), item.get_id(), "disagree");
+            }
+        });
 
         return view;
     }
@@ -92,5 +126,47 @@ public class FeedListAdapter extends BaseAdapter{
         return DateUtils.getRelativeTimeSpanString(
                 Long.parseLong(String.valueOf(calendar.getTimeInMillis())),
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+    }
+
+    private void votePublication(final String idUser, final String idPublication, final String type) {
+        String url = URLHelper.VOTE_PUBLICATION.replace(":id", idPublication);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(calendar.getTimeInMillis());
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                String date = format1.format(calendar.getTime());
+
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", idUser);
+                params.put("idPublication", idPublication);
+                params.put("type", type);
+                params.put("date", date);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
     }
 }

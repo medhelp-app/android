@@ -8,17 +8,11 @@ public class FeedItem {
     private String date;
     private String text;
     private String type;
+    private String comments;
+    private String agree;
+    private String disagree;
 
     public FeedItem() {
-    }
-
-    public FeedItem(String _id, String name, String idUser, String date, String text, String type) {
-        this._id = _id;
-        this.name = name;
-        this.idUser = idUser;
-        this.date = date;
-        this.text = text;
-        this.type = type;
     }
 
     public String get_id() {
@@ -67,5 +61,29 @@ public class FeedItem {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getAgree() {
+        return agree;
+    }
+
+    public void setAgree(String agree) {
+        this.agree = agree;
+    }
+
+    public String getDisagree() {
+        return disagree;
+    }
+
+    public void setDisagree(String disagree) {
+        this.disagree = disagree;
     }
 }

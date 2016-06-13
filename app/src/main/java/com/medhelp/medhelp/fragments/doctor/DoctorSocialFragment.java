@@ -88,7 +88,7 @@ public class DoctorSocialFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 feedItems = parseResponseJSON(response);
-                listAdapter = new FeedListAdapter(getActivity(), feedItems);
+                listAdapter = new FeedListAdapter(getActivity(), feedItems, mUser);
                 listView.setAdapter(listAdapter);
             }
         }, new Response.ErrorListener() {

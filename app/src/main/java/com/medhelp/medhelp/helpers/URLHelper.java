@@ -45,4 +45,6 @@ public class URLHelper {
     public static final String GET_PUBLICATIONS = "https://medhelp-app.herokuapp.com/api/publications";
 
     public static final String ADD_PUBLICATION = "https://medhelp-app.herokuapp.com/api/publications";
+
+    public static final String VOTE_PUBLICATION = "https://medhelp-app.herokuapp.com/api/publications/:id/vote";
 }
