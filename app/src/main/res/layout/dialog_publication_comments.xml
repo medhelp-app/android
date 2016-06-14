@@ -1,9 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.patient.PatientSocialFragment">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/post"
@@ -17,16 +16,16 @@
         android:orientation="horizontal" >
 
         <EditText
-            android:id="@+id/text_new_publication"
+            android:id="@+id/text_new_publication_comment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:hint="@string/new_post" />
+            android:hint="@string/new_comment" />
 
         <Button
-            android:id="@+id/btn_new_publication"
+            android:id="@+id/btn_new_publication_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/post"
+            android:text="@string/to_comment"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -34,11 +33,8 @@
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post"
-        android:divider="@null"
-        android:paddingBottom="@dimen/tab_bottom_margin"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_publications_comments" />
 
-</RelativeLayout>
+</LinearLayout>

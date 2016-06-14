@@ -4,7 +4,7 @@ public class FeedItem {
 
     private String _id;
     private String idUser;
-    private String name;
+    private String nameUser;
     private String date;
     private String text;
     private String type;
@@ -27,12 +27,12 @@ public class FeedItem {
         return idUser;
     }
 
-    public String getName() {
-        return name;
+    public String getNameUser() {
+        return nameUser;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
     public void setIdUser(String idUser) {

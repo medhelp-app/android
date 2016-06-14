@@ -22,13 +22,13 @@ public class URLHelper {
 
     public static final String ADD_PATIENT_BODY_PART_PROBLEM_URL = "https://medhelp-app.herokuapp.com/api/patients/:id/bodyparts";
 
-    public static final String GET_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
+    public static final String GET_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/users/:id/image";
 
-    public static final String SAVE_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/patients/:id/image";
+    public static final String SAVE_PATIENT_IMAGE = "https://medhelp-app.herokuapp.com/api/users/:id/image";
 
-    public static final String GET_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/doctors/:id/image";
+    public static final String GET_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/users/:id/image";
 
-    public static final String SAVE_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/doctors/:id/image";
+    public static final String SAVE_DOCTOR_IMAGE = "https://medhelp-app.herokuapp.com/api/users/:id/image";
 
     public static final String SAVE_DOCTOR_OPINIONS = "https://medhelp-app.herokuapp.com/api/doctors/:id/opinions";
 
@@ -47,4 +47,8 @@ public class URLHelper {
     public static final String ADD_PUBLICATION = "https://medhelp-app.herokuapp.com/api/publications";
 
     public static final String VOTE_PUBLICATION = "https://medhelp-app.herokuapp.com/api/publications/:id/vote";
+
+    public static final String GET_PUBLICATION_COMMENTS = "https://medhelp-app.herokuapp.com/api/publications/:id/comment";
+
+    public static final String ADD_PUBLICATION_COMMENT = "https://medhelp-app.herokuapp.com/api/publications/:id/comment";
 }

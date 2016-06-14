@@ -2,13 +2,17 @@ package com.medhelp.medhelp.views.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -17,14 +21,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
+import com.medhelp.medhelp.model.CommentItem;
 import com.medhelp.medhelp.model.FeedItem;
 import com.medhelp.medhelp.model.User;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -73,18 +82,21 @@ public class FeedListAdapter extends BaseAdapter{
         TextView timestamp = (TextView) view.findViewById(R.id.date_timestamp_feedItem);
 
         TextView text = (TextView) view.findViewById(R.id.text_publication_feedItem);
+
         final TextView agreeCount = (TextView) view.findViewById(R.id.text_agree_count_feedItem);
         final TextView disagreeCount = (TextView) view.findViewById(R.id.text_disagree_count_feedItem);
+        final TextView commentsCount = (TextView) view.findViewById(R.id.text_comment_feedItem);
 
         final FeedItem item = feedItems.get(i);
 
-        name.setText(item.getName());
+        name.setText(item.getNameUser());
 
         CharSequence timeAgo = parseDate(item.getDate());
         timestamp.setText(timeAgo);
 
         agreeCount.setText(item.getAgree());
         disagreeCount.setText(item.getDisagree());
+        commentsCount.setText(item.getComments() + " Comentários");
 
         if (!TextUtils.isEmpty(item.getText())) {
             text.setText(item.getText());
@@ -106,6 +118,23 @@ public class FeedListAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 votePublication(user.get_id(), item.get_id(), "disagree");
+            }
+        });
+
+        ImageButton commentBtn = (ImageButton) view.findViewById(R.id.btn_comment_feedItem);
+        TextView commentText = (TextView) view.findViewById(R.id.text_comment_feedItem);
+
+        commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadCommentsFromService(view, item.get_id());
+            }
+        });
+
+        commentText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadCommentsFromService(view, item.get_id());
             }
         });
 
@@ -133,7 +162,7 @@ public class FeedListAdapter extends BaseAdapter{
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                activity.recreate();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -169,4 +198,112 @@ public class FeedListAdapter extends BaseAdapter{
 
         AppController.getInstance().addToRequestQueue(request);
     }
+
+    private void loadCommentsFromService(final View view, final String publicationId) {
+        String url = URLHelper.GET_PUBLICATION_COMMENTS.replace(":id", publicationId);
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                List<CommentItem> commentItems = parseResponseJSON(response);
+
+                createCommentsDialog(commentItems, view, publicationId);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    private List<CommentItem> parseResponseJSON(String response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        CommentItem[] commentItems = new CommentItem[]{};
+        try {
+            commentItems = objectMapper.readValue(response, CommentItem[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Arrays.asList(commentItems);
+    }
+
+    private void createCommentsDialog(List<CommentItem> commentItems, View view, final String publicationId) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext(), R.style.AppCompatAlertDialogStyle);
+        View dialogView = View.inflate(view.getContext(), R.layout.dialog_publication_comments, null);
+        alertDialog.setView(dialogView);
+
+        CommentListAdapter listAdapter = new CommentListAdapter(activity, commentItems, user, publicationId);
+        ListView listView = (ListView) dialogView.findViewById(R.id.list_publications_comments);
+        listView.setAdapter(listAdapter);
+
+        alertDialog.create();
+        final AlertDialog dialog = alertDialog.show();
+
+        Button comment = (Button) dialogView.findViewById(R.id.btn_new_publication_comment);
+        final EditText newComment = (EditText) dialogView.findViewById(R.id.text_new_publication_comment);
+
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentPublication(user.get_id(), publicationId, newComment.getText().toString(), dialog);
+            }
+        });
+    }
+
+    private void commentPublication(final String idUser, final String idPublication, final String text, final AlertDialog alertDialog) {
+        String url = URLHelper.ADD_PUBLICATION_COMMENT.replace(":id", idPublication);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                alertDialog.dismiss();
+                activity.recreate();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(calendar.getTimeInMillis());
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                String date = format1.format(calendar.getTime());
+
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", idUser);
+                params.put("idPublication", idPublication);
+                params.put("text", text);
+                params.put("date", date);
+
+                return params;
+            }
+        };
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
 }

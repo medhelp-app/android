@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context="com.medhelp.medhelp.fragments.doctor.DoctorSocialFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/post"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/feed_item_profile_pic"
 
         android:layout_marginLeft="@dimen/feed_item_margin"
         android:layout_marginRight="@dimen/feed_item_margin"
@@ -25,9 +25,12 @@
             android:id="@+id/btn_new_publication"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/post"/>
+            android:text="@string/post"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/list"

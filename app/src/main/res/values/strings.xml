@@ -58,6 +58,7 @@
     <string name="evaluate_list">Ver opiniões</string>
     <string name="general">Geral</string>
     <string name="comment">Comentário</string>
+    <string name="comments">Comentários</string>
 
     <string name="availabilities">Horários de atendimento</string>
     <string name="add_availability">Adicionar horário</string>
@@ -68,6 +69,8 @@
 
     <string name="new_post">Nova postagem</string>
     <string name="post">Postar</string>
+    <string name="new_comment">Novo comentário</string>
+    <string name="to_comment">Comentar</string>
 
     <string-array name="user_type">
         <item>Paciente</item>
