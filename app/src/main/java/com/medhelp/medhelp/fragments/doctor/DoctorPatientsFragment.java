@@ -1,5 +1,6 @@
 package com.medhelp.medhelp.fragments.doctor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medhelp.medhelp.AppController;
 import com.medhelp.medhelp.R;
+import com.medhelp.medhelp.activities.ViewPatientProfileActivity;
 import com.medhelp.medhelp.helpers.ApiKeyHelper;
 import com.medhelp.medhelp.helpers.URLHelper;
 import com.medhelp.medhelp.model.Appointment;
@@ -70,7 +72,10 @@ public class DoctorPatientsFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Intent intent = new Intent(getActivity(), ViewPatientProfileActivity.class);
+                intent.putExtra("mDoctorId", mUser.get_id());
+                intent.putExtra("patientId", mAppointments.get(i).getUser().get_id());
+                startActivity(intent);
             }
         });
 

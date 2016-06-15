@@ -173,7 +173,8 @@ public class LoginActivity extends AppCompatActivity {
             user = objectMapper.readValue(String.valueOf(jsonUser), User.class);
             ApiKeyHelper.setApiKey(objectMapper.readValue(String.valueOf(jsonApikey), String.class));
         } catch (IOException e) {
-            onLoginFailed("Ocorreu um erro na comunicação com o servidor");
+            onLoginFailed("" +
+                    "Ocorreu um erro na comunicação com o servidor");
         }
 
         return user;

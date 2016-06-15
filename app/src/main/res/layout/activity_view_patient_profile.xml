@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scroll_viewPatient"
+    android:orientation="vertical"
+    tools:context="com.medhelp.medhelp.activities.ViewPatientProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_profileImage_doctorProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/blank_profile"
+            android:id="@+id/image_profile_viewPatient"
+            android:layout_width="@dimen/image_profile_width"
+            android:layout_height="@dimen/image_profile_height"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/separator_margin"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/hint_name"
+            android:id="@+id/name_viewPatient"
+            android:layout_below="@+id/image_profile_viewPatient"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_email"
+            android:id="@+id/email_viewPatient"
+            android:layout_below="@+id/name_viewPatient"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/hint_phone"
+            android:id="@+id/phone_viewPatient"
+            android:layout_below="@+id/email_viewPatient"
+            android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/phone_viewPatient"
+            android:id="@+id/layout_rating_viewPatient">
+
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/image_body_patientProfile"
+            android:background="@drawable/ic_accessibility_white_24dp"
+            android:layout_below="@+id/layout_rating_viewPatient"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/description_icon_body" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -38,10 +38,12 @@ import com.medhelp.medhelp.model.Problem;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PatientHumanBodyActivity extends Activity implements DatePickerDialog.OnDateSetListener {
@@ -66,6 +68,10 @@ public class PatientHumanBodyActivity extends Activity implements DatePickerDial
     private RadioButton mDialogHighButton;
     private TextView mDialogProblemDate;
     private Spinner mDialogBodyParts;
+
+    private int mDayOfMonth;
+    private int mMonthOfYear;
+    private int mYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -382,12 +388,17 @@ public class PatientHumanBodyActivity extends Activity implements DatePickerDial
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(mYear, mMonthOfYear, mDayOfMonth);
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+                String formattedDate = format1.format(calendar.getTime());
+
                 Map<String, String> params = new HashMap<>();
                 params.put("part", part);
                 params.put("problem", problem);
                 params.put("description", description);
                 params.put("severity", severity);
-                params.put("occurredDate", date);
+                params.put("occurredDate", formattedDate);
 
                 return params;
             }
@@ -398,6 +409,10 @@ public class PatientHumanBodyActivity extends Activity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        mDayOfMonth = dayOfMonth;
+        mMonthOfYear = monthOfYear;
+        mDayOfMonth = dayOfMonth;
+
         String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
         mDialogProblemDate.setText(date);
     }

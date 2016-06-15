@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -79,7 +81,7 @@ public class EditPatientProfileActivity extends Activity {
                         mCity.getText().toString(), mState.getText().toString(),
                         mCountry.getText().toString(), mPhone.getText().toString());
 
-                saveImage();
+//                saveImage();
             }
         });
 
@@ -156,7 +158,13 @@ public class EditPatientProfileActivity extends Activity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(), "Erro de tempo de resposta", Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(), "Falha na conexão com o servidor", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Erro ao completar operação", Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override
