@@ -83,6 +83,8 @@ public class PatientDoctorFragment extends Fragment {
             }
         });
 
+        getDoctorsFromService("a");
+
         return view;
     }
 
@@ -97,35 +99,7 @@ public class PatientDoctorFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String url = URLHelper.DOCTOR_FIND_URL + "/" + query.replace(" ", "%20");
-                StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mDoctors = parseResponseJSON(response);
-                        mDoctorListAdapter = new DoctorListAdapter(getActivity(), mDoctors);
-                        mListView.setAdapter(mDoctorListAdapter);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
-                    }
-                }){
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("x-access-token", ApiKeyHelper.getApiKey());
-
-                        return params;
-                    }
-                };
-
-                request.setRetryPolicy(new DefaultRetryPolicy(
-                        5000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-                AppController.getInstance().addToRequestQueue(request);
+                getDoctorsFromService(query);
 
                 return false;
             }
@@ -158,6 +132,38 @@ public class PatientDoctorFragment extends Fragment {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
                 new ComponentName(getActivity(), MainActivity.class)));
         searchView.setIconifiedByDefault(false);
+    }
+
+    private void getDoctorsFromService(String query) {
+        String url = URLHelper.DOCTOR_FIND_URL + "/" + query.replace(" ", "%20");
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                mDoctors = parseResponseJSON(response);
+                mDoctorListAdapter = new DoctorListAdapter(getActivity(), mDoctors);
+                mListView.setAdapter(mDoctorListAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Tente novamente", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("x-access-token", ApiKeyHelper.getApiKey());
+
+                return params;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     private List<Doctor> parseResponseJSON(String response) {

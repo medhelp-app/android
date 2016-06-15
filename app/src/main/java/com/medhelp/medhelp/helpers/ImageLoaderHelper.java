@@ -24,7 +24,7 @@ public class ImageLoaderHelper extends AsyncTask<String, Void, Bitmap> {
         try {
             Bitmap img = ImageHelper.decodeBase64ToImage(base64Image);
             if (img != null)
-                bitmap = Bitmap.createScaledBitmap(img, 50, 50, false);
+                bitmap = Bitmap.createScaledBitmap(img, 100, 100, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

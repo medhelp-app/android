@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -165,7 +164,6 @@ public class DoctorPrescriptionFragment extends Fragment {
         alertDialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getContext(), mDialogStartHourText.getText().toString(), Toast.LENGTH_LONG).show();
                 String day = String.valueOf(WeekDayHelper.mWeekDaysMap.get(mDialogWeekdaySpinner.getSelectedItem().toString()));
                 String startHour = mDialogStartHourText.getText().toString();
                 String endHour = mDialogEndHourText.getText().toString();
