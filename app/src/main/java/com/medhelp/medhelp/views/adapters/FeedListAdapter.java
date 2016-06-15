@@ -19,7 +19,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FeedListAdapter extends BaseAdapter{
 
@@ -77,7 +78,7 @@ public class FeedListAdapter extends BaseAdapter{
         if (view == null)
             view = inflater.inflate(R.layout.feed_item, null);
 
-        NetworkImageView profilePic = (NetworkImageView) view.findViewById(R.id.image_profilePic_feedItem);
+        CircleImageView profilePic = (CircleImageView) view.findViewById(R.id.image_profilePic_feedItem);
         TextView name = (TextView) view.findViewById(R.id.text_userName_feedItem);
         TextView timestamp = (TextView) view.findViewById(R.id.date_timestamp_feedItem);
 
@@ -88,6 +89,10 @@ public class FeedListAdapter extends BaseAdapter{
         final TextView commentsCount = (TextView) view.findViewById(R.id.text_comment_feedItem);
 
         final FeedItem item = feedItems.get(i);
+
+//        if (item.getImageUser() != null && !item.getImageUser().isEmpty()) {
+//            profilePic.setImageBitmap(ImageHelper.decodeBase64ToImage(item.getImageUser()));
+//        }
 
         name.setText(item.getNameUser());
 

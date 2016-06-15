@@ -231,6 +231,7 @@ public class EditDoctorProfileActivity extends Activity {
                 params.put("crm", crm);
                 params.put("ufCrm", crmUf);
                 params.put("addressStreet", streetName);
+                params.put("addressNumber", "");
                 params.put("city", city);
                 params.put("zipCode", zipCode);
                 params.put("state", state);
@@ -246,6 +247,8 @@ public class EditDoctorProfileActivity extends Activity {
 
     private boolean parseSaveUserResponseJSON(String response) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         Map<String, String> message = null;
         try {
             message = mapper.readValue(response, new TypeReference<Map<String,String>>() { });

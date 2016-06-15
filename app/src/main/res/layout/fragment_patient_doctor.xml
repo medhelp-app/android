@@ -9,6 +9,7 @@
         android:id="@+id/list_doctors_patientDoctor"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/feed_item_padding_top_bottom"
         android:divider="@null" />
 
 </FrameLayout>

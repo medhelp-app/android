@@ -4,6 +4,7 @@ public class FeedItem {
 
     private String _id;
     private String idUser;
+    private String imageUser;
     private String nameUser;
     private String date;
     private String text;
@@ -25,6 +26,14 @@ public class FeedItem {
 
     public String getIdUser() {
         return idUser;
+    }
+
+    public String getImageUser() {
+        return imageUser;
+    }
+
+    public void setImageUser(String imageUser) {
+        this.imageUser = imageUser;
     }
 
     public String getNameUser() {

@@ -69,7 +69,7 @@ public class PatientProfileFragment extends Fragment {
 
         if(mUser != null) {
             loadUserFromService();
-            loadImageFromService();
+//            loadImageFromService();
         }
 
         initFields(view);
@@ -85,8 +85,6 @@ public class PatientProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +107,7 @@ public class PatientProfileFragment extends Fragment {
     }
 
     private void initFields(View view) {
+        mProfileImage = (CircleImageView) view.findViewById(R.id.image_profile_patientProfile);
         nameText = (TextView) view.findViewById(R.id.input_name_patientProfile);
         emailText = (TextView) view.findViewById(R.id.input_email_patientProfile);
         locationText = (TextView) view.findViewById(R.id.input_address_patientProfile);
@@ -121,6 +120,9 @@ public class PatientProfileFragment extends Fragment {
             emailText.setText(user.getEmail());
             locationText.setText(String.valueOf(user.getFullAddress()));
             phoneText.setText(user.getPhone());
+
+            if (user.getProfileImage() != null && !user.getProfileImage().isEmpty())
+                mProfileImage.setImageBitmap(ImageHelper.decodeBase64ToImage(user.getProfileImage()));
         }
     }
 

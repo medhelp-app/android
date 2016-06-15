@@ -23,12 +23,11 @@
             android:paddingLeft="@dimen/feed_item_padding_left_right"
             android:paddingRight="@dimen/feed_item_padding_left_right" >
 
-            <com.android.volley.toolbox.NetworkImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/blank_profile"
                 android:id="@+id/image_profilePic_feedItem"
                 android:layout_width="@dimen/feed_item_profile_pic"
-                android:layout_height="@dimen/feed_item_profile_pic"
-                android:scaleType="fitCenter" >
-            </com.android.volley.toolbox.NetworkImageView>
+                android:layout_height="@dimen/feed_item_profile_pic"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

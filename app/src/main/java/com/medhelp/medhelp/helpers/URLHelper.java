@@ -53,4 +53,8 @@ public class URLHelper {
     public static final String GET_PUBLICATION_COMMENTS = "https://medhelp-app.herokuapp.com/api/publications/:id/comment";
 
     public static final String ADD_PUBLICATION_COMMENT = "https://medhelp-app.herokuapp.com/api/publications/:id/comment";
+
+    public static final String GET_ARCHIVES = "https://medhelp-app.herokuapp.com/api/archives/patient/:id";
+
+    public static final String SAVE_ARCHIVE = "https://medhelp-app.herokuapp.com/api/archives/";
 }
